@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -21,6 +22,22 @@ public class UIManager : Singleton<UIManager>
     public const string LoseMessage = "You Lose!";
     public const string ReloadMessage = "Reload!";
     public const string EnemyKilledMessage = "Enemy Killed!";
+    public const string EnemySpawnedMessage = "Enemy Spawned!";
+    public const string PatronsCancelledMessage = "Patrons Cancelled!";
+
+    private Queue<string> messageQueue = new Queue<string>();
+    private float delay = 1f;
+
+    private void Awake()
+    {
+        messageText.gameObject.SetActive(false);
+        messageText.text = string.Empty;
+    }
+
+    private void Start()
+    {
+        ShowMessage(GameStartMessage);
+    }
 
     public void UpdateHealth(int health)
     {
@@ -32,7 +49,7 @@ public class UIManager : Singleton<UIManager>
         magazinesText.text = string.Format(MagazinesTextFormat, magazines);
     }
 
-    public void UpdatePatrones(int patrones)
+    public void UpdatePatrons(int patrones)
     {
         patronesText.text = string.Format(PatronesTextFormat, patrones);
     }
@@ -42,8 +59,14 @@ public class UIManager : Singleton<UIManager>
         enemiesCountText.text = string.Format(EnemiesCountTextFormat, count);
     }
 
-    public void ShowMessage(string message, float delay)
+    public void ShowMessage(string message)
     {
+        if (messageText.text != string.Empty)
+        {
+            messageQueue.Enqueue(message);
+            return;
+        }
+
         messageText.text = message;
         messageText.gameObject.SetActive(true);
         StartCoroutine(HideMessageAfterDelay(delay));
@@ -52,6 +75,14 @@ public class UIManager : Singleton<UIManager>
     private IEnumerator HideMessageAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
         messageText.gameObject.SetActive(false);
+        messageText.text = string.Empty;
+
+        if (messageQueue.Count > 0)
+        {
+            string nextMessage = messageQueue.Dequeue();
+            ShowMessage(nextMessage);
+        }
     }
 }

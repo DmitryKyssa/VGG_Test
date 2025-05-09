@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private WeaponData weaponData;
     private float lastFireTime = 0f;
+    private int currentMagazines;
+    private int currentPatrons;
 
     private InputAction fireAction;
 
@@ -15,6 +18,12 @@ public class Weapon : MonoBehaviour
         fireAction = new InputAction("Fire", binding: "<Mouse>/leftButton");
         fireAction.performed += ctx => Fire();
         fireAction.Enable();
+
+        currentMagazines = weaponData.magazines;
+        currentPatrons = weaponData.patronsPerMagazine;
+
+        UIManager.Instance.UpdateMagazines(currentMagazines);
+        UIManager.Instance.UpdatePatrons(currentPatrons);
     }
 
     private void Fire()
@@ -24,8 +33,30 @@ public class Weapon : MonoBehaviour
 
         StartCoroutine(PlayFireAnimation());
 
+        currentPatrons--;
+        UIManager.Instance.UpdatePatrons(currentPatrons);
+
+        if (currentPatrons == 0 && currentMagazines > 0)
+        {
+            UIManager.Instance.ShowMessage(UIManager.ReloadMessage);
+            currentMagazines--;
+            UIManager.Instance.UpdateMagazines(currentMagazines);
+            UIManager.Instance.UpdatePatrons(weaponData.patronsPerMagazine);
+            currentPatrons = weaponData.patronsPerMagazine;
+        }
+        else if (currentPatrons <= 0 && currentMagazines == 0)
+        {
+            UIManager.Instance.ShowMessage(UIManager.PatronsCancelledMessage);
+            return;
+        }
+
         if (Physics.Raycast(firePoint.position, firePoint.up, out RaycastHit hit, weaponData.range))
         {
+            if (hit.collider.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(weaponData.damage);
+            }
+
             Debug.Log($"Hit: {hit.collider.name}");
         }
 
