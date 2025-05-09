@@ -1,45 +1,50 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Pool;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireTimeout = 3f;
-    [SerializeField] private float bulletSpeed = 20f;
+    [SerializeField] private WeaponData weaponData;
     private float lastFireTime = 0f;
 
     private InputAction fireAction;
-    public ObjectPool<Bullet> bulletPool;
 
     private void Awake()
     {
         fireAction = new InputAction("Fire", binding: "<Mouse>/leftButton");
         fireAction.performed += ctx => Fire();
         fireAction.Enable();
-
-        bulletPool = new ObjectPool<Bullet>(
-            createFunc: () => Instantiate(bulletPrefab, GameObject.FindWithTag(Tag.BulletsPool.ToTagString()).transform),
-            actionOnGet: bullet => bullet.gameObject.SetActive(true),
-            actionOnRelease: bullet => bullet.gameObject.SetActive(false),
-            actionOnDestroy: bullet => Destroy(bullet.gameObject),
-            maxSize: 20
-        );
     }
 
     private void Fire()
     {
-        if (Time.time - lastFireTime < fireTimeout && lastFireTime != 0)
+        if (Time.time - lastFireTime < weaponData.fireRate)
             return;
 
-        Bullet bullet = bulletPool.Get();
-        bullet.transform.SetPositionAndRotation(firePoint.position, firePoint.rotation);
-        bullet.SetParentWeapon(this);
-        bullet.SetActiveStatus(true);
-        bullet.SetSpeed(bulletSpeed);
+        StartCoroutine(PlayFireAnimation());
+
+        if (Physics.Raycast(firePoint.position, firePoint.up, out RaycastHit hit, weaponData.range))
+        {
+            Debug.Log($"Hit: {hit.collider.name}");
+        }
 
         lastFireTime = Time.time;
+    }
+
+    private IEnumerator PlayFireAnimation()
+    {
+        Vector3 originalPosition = transform.localPosition;
+        Vector3 recoilPosition = originalPosition;
+        recoilPosition.z -= 0.1f;
+        float recoilDuration = 0.1f;
+        float elapsedTime = 0f;
+        while (elapsedTime < recoilDuration)
+        {
+            transform.localPosition = Vector3.Lerp(originalPosition, recoilPosition, elapsedTime / recoilDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void OnDisable()
