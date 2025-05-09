@@ -12,6 +12,7 @@ public enum Tag
    Player,
    GameController,
    LevelObjects,
+   BulletsPool,
 }
 
 public static class TagExtensions
@@ -36,6 +37,8 @@ public static class TagExtensions
                return "GameController";
            case Tag.LevelObjects:
                return "LevelObjects";
+           case Tag.BulletsPool:
+               return "BulletsPool";
            default:
                return string.Empty;
         }
