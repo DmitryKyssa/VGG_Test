@@ -17,7 +17,7 @@ public class Pickable : MonoBehaviour
         if (other.gameObject.CompareTag(Tag.Player))
         {
             SetPickableEffect();
-            PickablesController.Instance.OnReleasePickable(this);
+            PickablesController.Instance.PickablePool.Release(this);
         }
     }
 

@@ -66,6 +66,7 @@ public class Weapon : MonoBehaviour
     {
         currentMagazines += magazines;
         UIManager.Instance.UpdateMagazines(currentMagazines);
+        Debug.Log($"Added {magazines} magazines. Current magazines: {currentMagazines}");
     }
 
     private IEnumerator PlayFireAnimation()

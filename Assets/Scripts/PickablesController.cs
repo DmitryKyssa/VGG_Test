@@ -1,16 +1,19 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class PickablesController : Singleton<PickablesController>
 {
     [SerializeField] private Transform[] pickablesSpawnPoints;
-    [SerializeField] private Pickable[] pickablePrefab;
+    [SerializeField] private Pickable[] pickablePrefabs;
     [SerializeField] private float delay = 20f;
     private int currentSpawnPointIndex = 0;
     private int currentPickableIndex = 0;
+    private int defaultLayerMask = 0;
 
     private ObjectPool<Pickable> pickablePool;
+    public ObjectPool<Pickable> PickablePool => pickablePool;
 
     private void Awake()
     {
@@ -19,8 +22,10 @@ public class PickablesController : Singleton<PickablesController>
             OnGetPickable,
             OnReleasePickable,
             OnDestroyPickable,
-            maxSize: 10
+            maxSize: pickablesSpawnPoints.Length
         );
+
+        defaultLayerMask = LayerMask.GetMask("Default");
     }
 
     private void OnDrawGizmos()
@@ -34,48 +39,65 @@ public class PickablesController : Singleton<PickablesController>
 
     private IEnumerator Start()
     {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(delay);
+        WaitForSeconds wait = new WaitForSeconds(delay);
+
         while (true)
-        {           
-            yield return waitForSeconds;
-            Pickable pickable = pickablePool.Get();
-            pickable.gameObject.SetActive(true);
+        {
+            yield return wait;
+
+            while (pickablePool.CountActive == pickablesSpawnPoints.Length)
+            {
+                yield return null;
+            }
+
+            pickablePool.Get();
         }
     }
 
     private Pickable CreatePickable()
     {
-        int lastIndex = currentPickableIndex;
-        //while (currentPickableIndex == lastIndex)
-        //{
-        //    currentPickableIndex = Random.Range(0, pickablePrefab.Length);
-        //}
-
-        //int lastSpawnPointIndex = currentSpawnPointIndex;
-        //while (currentSpawnPointIndex == lastSpawnPointIndex)
-        //{
-        //    currentSpawnPointIndex = Random.Range(0, pickablesSpawnPoints.Length);
-        //}
-
-        return Instantiate(
-            pickablePrefab[currentPickableIndex],
-            pickablesSpawnPoints[currentSpawnPointIndex].position,
-            Quaternion.identity,
-            transform);
+        int prefabIndex = Random.Range(0, pickablePrefabs.Length);
+        Pickable pickable = Instantiate(pickablePrefabs[prefabIndex], Vector3.zero, Quaternion.identity, transform);
+        pickable.gameObject.SetActive(false);
+        return pickable;
     }
 
     private void OnGetPickable(Pickable pickable)
     {
-        pickable.gameObject.SetActive(true);
-        int lastSpawnPointIndex = currentSpawnPointIndex;
-        //while (currentSpawnPointIndex == lastSpawnPointIndex)
-        //{
-        //    currentSpawnPointIndex = Random.Range(0, pickablesSpawnPoints.Length);
-        //}
-        pickable.transform.position = pickablesSpawnPoints[currentSpawnPointIndex].position;
+        if (pickable == null)
+        {
+            CreatePickable();
+        }
+
+        List<int> shuffledIndices = new List<int>();
+        for (int i = 0; i < pickablesSpawnPoints.Length; i++)
+        {
+            shuffledIndices.Add(i);
+        }
+
+        for (int i = 0; i < shuffledIndices.Count; i++)
+        {
+            int randIndex = Random.Range(i, shuffledIndices.Count);
+            (shuffledIndices[i], shuffledIndices[randIndex]) = (shuffledIndices[randIndex], shuffledIndices[i]);
+        }
+
+        foreach (int index in shuffledIndices)
+        {
+            Vector3 pos = pickablesSpawnPoints[index].position;
+
+            if (!Physics.CheckSphere(pos, 0.25f, defaultLayerMask, QueryTriggerInteraction.Collide))
+            {
+                pickable.transform.position = pos;
+                pickable.gameObject.SetActive(true);
+                return;
+            }
+        }
+
+        Debug.LogWarning("No free spawn points found for pickable.");
+        pickablePool.Release(pickable);
     }
 
-    public void OnReleasePickable(Pickable pickable)
+    private void OnReleasePickable(Pickable pickable)
     {
         pickable.gameObject.SetActive(false);
     }

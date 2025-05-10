@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -7,8 +6,8 @@ using Random = UnityEngine.Random;
 public class EnemiesController : Singleton<EnemiesController>
 {
     [SerializeField] private Enemy enemyPrefab;
-    [SerializeField] private int initialEnemyCount = 5;
-    [SerializeField] private float spawnRadius = 10f;
+    [SerializeField] private int enemyCount = 5;
+    [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnDelay = 5f;
 
     private ObjectPool<Enemy> enemyPool;
@@ -20,7 +19,7 @@ public class EnemiesController : Singleton<EnemiesController>
             actionOnGet: enemy => enemy.gameObject.SetActive(true),
             actionOnRelease: enemy => enemy.gameObject.SetActive(false),
             actionOnDestroy: enemy => Destroy(enemy.gameObject),
-            maxSize: 20
+            maxSize: enemyCount
         );
 
         StartCoroutine(SpawnInitialEnemies());
@@ -31,7 +30,7 @@ public class EnemiesController : Singleton<EnemiesController>
     private IEnumerator SpawnInitialEnemies()
     {
         WaitForSeconds waitForSeconds = new WaitForSeconds(spawnDelay);
-        for (int i = 0; i < initialEnemyCount; i++)
+        for (int i = 0; i < enemyCount; i++)
         {
             SpawnEnemy();
             UIManager.Instance.ShowMessage(UIManager.ENEMY_SPAWNED_MESSAGE);
@@ -49,7 +48,8 @@ public class EnemiesController : Singleton<EnemiesController>
 
     private void SpawnEnemy()
     {
-        Vector3 spawnPosition = Random.insideUnitSphere * spawnRadius;
+        int randomIndex = Random.Range(0, spawnPoints.Length);
+        Vector3 spawnPosition = spawnPoints[randomIndex].position;
         spawnPosition.y = 1;
         Enemy enemy = enemyPool.Get();
         enemy.transform.position = spawnPosition;
@@ -59,5 +59,14 @@ public class EnemiesController : Singleton<EnemiesController>
     public void ReturnEnemyToPool(Enemy enemy)
     {
         enemyPool.Release(enemy);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        foreach (var spawnPoint in spawnPoints)
+        {
+            Gizmos.DrawSphere(spawnPoint.position, 3f);
+        }
     }
 }
