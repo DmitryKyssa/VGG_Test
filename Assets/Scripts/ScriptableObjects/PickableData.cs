@@ -15,4 +15,5 @@ public class PickableData : ScriptableObject
     public Sprite pickableIcon;
     [ReadOnly] public PickableType pickableType;
     [ReadOnly] public int pickableValue;
+    [ReadOnly] public WeaponType weaponType;
 }
