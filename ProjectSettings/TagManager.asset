@@ -4,8 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - LevelObjects
   - BulletsPool
+  - Enemy
+  - Pickable
+  - Destroyable
   layers:
   - Default
   - TransparentFX

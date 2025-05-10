@@ -38,5 +38,6 @@ public class Enemy : MonoBehaviour, IDamageable
         playerTransform = PlayerController.Instance.transform;
         lastAttackTime = Time.time;
         currentHealth = health;
+        gameObject.SetTag(Tag.Enemy);
     }
 }
