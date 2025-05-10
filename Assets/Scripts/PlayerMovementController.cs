@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : Singleton<PlayerController>
+public class PlayerMovementController : Singleton<PlayerMovementController>
 {
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 5f;

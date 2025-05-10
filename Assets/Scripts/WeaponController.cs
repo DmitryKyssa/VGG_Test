@@ -15,6 +15,8 @@ public class WeaponController : Singleton<WeaponController>
     private Vector3 aimedWeaponPosition;
     private Vector3 screenCenter;
 
+    public Weapon Weapon => weapon;
+
     private void Awake()
     {
         playerInput = GetComponentInParent<PlayerInput>();

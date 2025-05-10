@@ -1,12 +1,5 @@
 using UnityEngine;
 
-public enum PickableType
-{
-    Health,
-    Magazines,
-    Weapon
-}
-
 [CreateAssetMenu(fileName = "Assets/Resources/Pickables/NewPickable", menuName = "ScriptableObjects/Pickable")]
 public class PickableData : ScriptableObject
 {

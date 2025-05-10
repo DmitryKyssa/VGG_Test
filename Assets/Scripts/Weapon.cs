@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,7 +37,7 @@ public class Weapon : MonoBehaviour
 
         if (currentPatrons == 0 && currentMagazines > 0)
         {
-            UIManager.Instance.ShowMessage(UIManager.ReloadMessage);
+            UIManager.Instance.ShowMessage(UIManager.RELOAD_MESSAGE);
             currentMagazines--;
             UIManager.Instance.UpdateMagazines(currentMagazines);
             UIManager.Instance.UpdatePatrons(weaponData.patronsPerMagazine);
@@ -46,7 +45,7 @@ public class Weapon : MonoBehaviour
         }
         else if (currentPatrons <= 0 && currentMagazines == 0)
         {
-            UIManager.Instance.ShowMessage(UIManager.PatronsCancelledMessage);
+            UIManager.Instance.ShowMessage(UIManager.PATRONS_CANCELED_MESSAGE);
             return;
         }
 
@@ -61,6 +60,12 @@ public class Weapon : MonoBehaviour
         }
 
         lastFireTime = Time.time;
+    }
+
+    public void TakeMagazines(int magazines)
+    {
+        currentMagazines += magazines;
+        UIManager.Instance.UpdateMagazines(currentMagazines);
     }
 
     private IEnumerator PlayFireAnimation()

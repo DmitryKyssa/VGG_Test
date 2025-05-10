@@ -34,7 +34,7 @@ public class EnemiesController : Singleton<EnemiesController>
         for (int i = 0; i < initialEnemyCount; i++)
         {
             SpawnEnemy();
-            UIManager.Instance.ShowMessage(UIManager.EnemySpawnedMessage);
+            UIManager.Instance.ShowMessage(UIManager.ENEMY_SPAWNED_MESSAGE);
             UIManager.Instance.UpdateEnemiesCount(enemyPool.CountActive);
             yield return waitForSeconds;
         }
@@ -43,7 +43,7 @@ public class EnemiesController : Singleton<EnemiesController>
     private void EnemyKilling(Enemy enemy)
     {
         ReturnEnemyToPool(enemy);
-        UIManager.Instance.ShowMessage(UIManager.EnemyKilledMessage);
+        UIManager.Instance.ShowMessage(UIManager.ENEMY_KILLED_MESSAGE);
         UIManager.Instance.UpdateEnemiesCount(enemyPool.CountActive);
     }
 

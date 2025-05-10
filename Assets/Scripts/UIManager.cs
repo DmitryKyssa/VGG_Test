@@ -11,22 +11,19 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI enemiesCountText;
     [SerializeField] private TextMeshProUGUI messageText;
 
-    private const string HealthTextFormat = "Health: {0}";
-    private const string MagazinesTextFormat = "Magazines: {0}";
-    private const string PatronesTextFormat = "Patrones: {0}";
-    private const string EnemiesCountTextFormat = "Enemies: {0}";
+    private const string HEALTH_TEXT_FORMAT = "Health: {0}";
+    private const string MAGAZINES_TEXT_FORMAT = "Magazines: {0}";
+    private const string PATRONES_TEXT_FORMAT = "Patrones: {0}";
+    private const string ENEMIES_COUNT_TEXT_FORMAT = "Enemies: {0}";
 
-    public const string GameStartMessage = "Game Start!";
-    public const string GameOverMessage = "Game Over!";
-    public const string WinMessage = "You Win!";
-    public const string LoseMessage = "You Lose!";
-    public const string ReloadMessage = "Reload!";
-    public const string EnemyKilledMessage = "Enemy Killed!";
-    public const string EnemySpawnedMessage = "Enemy Spawned!";
-    public const string PatronsCancelledMessage = "Patrons Cancelled!";
+    public const string GAME_START_MESSAGE = "Game Start!";
+    public const string RELOAD_MESSAGE = "Reload!";
+    public const string ENEMY_KILLED_MESSAGE = "Enemy Killed!";
+    public const string ENEMY_SPAWNED_MESSAGE = "Enemy Spawned!";
+    public const string PATRONS_CANCELED_MESSAGE = "Patrons Cancelled!";
 
-    private Queue<string> messageQueue = new Queue<string>();
-    private float delay = 1f;
+    private readonly Queue<string> messageQueue = new Queue<string>();
+    private readonly float delay = 1f;
 
     private void Awake()
     {
@@ -36,27 +33,27 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        ShowMessage(GameStartMessage);
+        ShowMessage(GAME_START_MESSAGE);
     }
 
     public void UpdateHealth(int health)
     {
-        healthText.text = string.Format(HealthTextFormat, health);
+        healthText.text = string.Format(HEALTH_TEXT_FORMAT, health);
     }
 
     public void UpdateMagazines(int magazines)
     {
-        magazinesText.text = string.Format(MagazinesTextFormat, magazines);
+        magazinesText.text = string.Format(MAGAZINES_TEXT_FORMAT, magazines);
     }
 
     public void UpdatePatrons(int patrones)
     {
-        patronesText.text = string.Format(PatronesTextFormat, patrones);
+        patronesText.text = string.Format(PATRONES_TEXT_FORMAT, patrones);
     }
 
     public void UpdateEnemiesCount(int count)
     {
-        enemiesCountText.text = string.Format(EnemiesCountTextFormat, count);
+        enemiesCountText.text = string.Format(ENEMIES_COUNT_TEXT_FORMAT, count);
     }
 
     public void ShowMessage(string message)
