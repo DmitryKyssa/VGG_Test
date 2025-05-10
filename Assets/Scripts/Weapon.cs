@@ -21,8 +21,8 @@ public class Weapon : MonoBehaviour
         currentMagazines = weaponData.magazines;
         currentPatrons = weaponData.patronsPerMagazine;
 
-        UIManager.Instance.UpdateMagazines(currentMagazines);
-        UIManager.Instance.UpdatePatrons(currentPatrons);
+        GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
+        GameUIController.Instance.UpdatePatrons(currentPatrons, weaponData.patronsPerMagazine);
     }
 
     private void Fire()
@@ -30,22 +30,28 @@ public class Weapon : MonoBehaviour
         if (Time.time - lastFireTime < weaponData.fireRate)
             return;
 
+        if (currentPatrons <= 0 && currentMagazines == 0)
+        {
+            currentPatrons = 0;
+            GameUIController.Instance.ShowMessage(GameUIController.PATRONS_CANCELED_MESSAGE);
+            return;
+        }
+
         StartCoroutine(PlayFireAnimation());
 
-        currentPatrons--;
-        UIManager.Instance.UpdatePatrons(currentPatrons);
+        GameUIController.Instance.UpdatePatrons(--currentPatrons, weaponData.patronsPerMagazine);
 
         if (currentPatrons == 0 && currentMagazines > 0)
         {
-            UIManager.Instance.ShowMessage(UIManager.RELOAD_MESSAGE);
+            GameUIController.Instance.ShowMessage(GameUIController.RELOAD_MESSAGE);
             currentMagazines--;
-            UIManager.Instance.UpdateMagazines(currentMagazines);
-            UIManager.Instance.UpdatePatrons(weaponData.patronsPerMagazine);
+            GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
+            GameUIController.Instance.UpdatePatrons(weaponData.patronsPerMagazine, weaponData.patronsPerMagazine);
             currentPatrons = weaponData.patronsPerMagazine;
         }
         else if (currentPatrons <= 0 && currentMagazines == 0)
         {
-            UIManager.Instance.ShowMessage(UIManager.PATRONS_CANCELED_MESSAGE);
+            GameUIController.Instance.ShowMessage(GameUIController.PATRONS_CANCELED_MESSAGE);
             return;
         }
 
@@ -65,7 +71,7 @@ public class Weapon : MonoBehaviour
     public void TakeMagazines(int magazines)
     {
         currentMagazines += magazines;
-        UIManager.Instance.UpdateMagazines(currentMagazines);
+        GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
         Debug.Log($"Added {magazines} magazines. Current magazines: {currentMagazines}");
     }
 

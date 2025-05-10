@@ -8,8 +8,6 @@ public class PickablesController : Singleton<PickablesController>
     [SerializeField] private Transform[] pickablesSpawnPoints;
     [SerializeField] private Pickable[] pickablePrefabs;
     [SerializeField] private float delay = 20f;
-    private int currentSpawnPointIndex = 0;
-    private int currentPickableIndex = 0;
     private int defaultLayerMask = 0;
 
     private ObjectPool<Pickable> pickablePool;

@@ -6,16 +6,18 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
 
+    public int MaxHealth => maxHealth;
+
     private void Awake()
     {
         currentHealth = maxHealth - 20;
-        UIManager.Instance.UpdateHealth(currentHealth);
+        GameUIController.Instance.UpdateHealth(currentHealth);
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        UIManager.Instance.UpdateHealth(currentHealth);
+        GameUIController.Instance.UpdateHealth(currentHealth);
         if (currentHealth <= 0)
         {
             Die();
@@ -29,7 +31,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
         {
             currentHealth = maxHealth;
         }
-        UIManager.Instance.UpdateHealth(currentHealth);
+        GameUIController.Instance.UpdateHealth(currentHealth);
         Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
     }
 

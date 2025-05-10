@@ -1,16 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
-using Random = UnityEngine.Random;
 
 public class EnemiesController : Singleton<EnemiesController>
 {
     [SerializeField] private Enemy enemyPrefab;
-    [SerializeField] private int enemyCount = 5;
+    [SerializeField] private int allEnemiesCount = 5;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnDelay = 5f;
 
     private ObjectPool<Enemy> enemyPool;
+
+    public int EnemyCount => allEnemiesCount;
 
     private void Awake()
     {
@@ -19,22 +20,22 @@ public class EnemiesController : Singleton<EnemiesController>
             actionOnGet: enemy => enemy.gameObject.SetActive(true),
             actionOnRelease: enemy => enemy.gameObject.SetActive(false),
             actionOnDestroy: enemy => Destroy(enemy.gameObject),
-            maxSize: enemyCount
+            maxSize: allEnemiesCount
         );
 
         StartCoroutine(SpawnInitialEnemies());
-        UIManager.Instance.UpdateEnemiesCount(enemyPool.CountActive);
+        GameUIController.Instance.UpdateEnemiesCount(enemyPool.CountActive);
         Enemy.EnemyKilled += EnemyKilling;
     }
 
     private IEnumerator SpawnInitialEnemies()
     {
         WaitForSeconds waitForSeconds = new WaitForSeconds(spawnDelay);
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < allEnemiesCount; i++)
         {
             SpawnEnemy();
-            UIManager.Instance.ShowMessage(UIManager.ENEMY_SPAWNED_MESSAGE);
-            UIManager.Instance.UpdateEnemiesCount(enemyPool.CountActive);
+            GameUIController.Instance.ShowMessage(GameUIController.ENEMY_SPAWNED_MESSAGE);
+            GameUIController.Instance.UpdateEnemiesCount(enemyPool.CountActive);
             yield return waitForSeconds;
         }
     }
@@ -42,8 +43,8 @@ public class EnemiesController : Singleton<EnemiesController>
     private void EnemyKilling(Enemy enemy)
     {
         ReturnEnemyToPool(enemy);
-        UIManager.Instance.ShowMessage(UIManager.ENEMY_KILLED_MESSAGE);
-        UIManager.Instance.UpdateEnemiesCount(enemyPool.CountActive);
+        GameUIController.Instance.ShowMessage(GameUIController.ENEMY_KILLED_MESSAGE);
+        GameUIController.Instance.UpdateEnemiesCount(enemyPool.CountActive);
     }
 
     private void SpawnEnemy()
