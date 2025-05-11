@@ -23,6 +23,8 @@ public class PickableEditorWindow : EditorWindow
     private Sprite existingPickableIcon;
     private PickableType existingPickableType;
 
+    private bool isPickableDataLoaded = false;
+
     [MenuItem("Tools/Pickable Data Editor")]
     public static void ShowWindow()
     {
@@ -87,15 +89,13 @@ public class PickableEditorWindow : EditorWindow
         #region Edit Existing Pickable Data
         GUILayout.Label("Edit Existing Pickable Data", EditorStyles.boldLabel);
         existingPickableData = (PickableData)EditorGUILayout.ObjectField("Existing Pickable Data", existingPickableData, typeof(PickableData), false);
-        if (existingPickableData != null)
+        if (existingPickableData != null && !isPickableDataLoaded)
         {
-            existingPickableName = existingPickableData.pickableName;
-            existingPickableDescription = existingPickableData.pickableDescription;
-            existingPickableIcon = existingPickableData.pickableIcon;
-            existingPickableType = existingPickableData.pickableType;
-            existingPickableValue = existingPickableData.pickableValue;
-            existingWeaponType = existingPickableData.weaponType;
+            LoadExistingData();
+        }
 
+        if (isPickableDataLoaded)
+        {
             existingPickableName = EditorGUILayout.TextField("Name", existingPickableName);
             existingPickableDescription = EditorGUILayout.TextField("Description", existingPickableDescription);
             existingPickableIcon = (Sprite)EditorGUILayout.ObjectField("Icon", existingPickableIcon, typeof(Sprite), false);
@@ -120,8 +120,8 @@ public class PickableEditorWindow : EditorWindow
             else if (existingPickableType == PickableType.Weapon)
             {
                 existingWeaponType = (WeaponType)EditorGUILayout.EnumPopup("Weapon Type", existingWeaponType);
-                
-                if(existingWeaponType == WeaponType.None)
+
+                if (existingWeaponType == WeaponType.None)
                 {
                     EditorGUILayout.HelpBox("Weapon type must be selected", MessageType.Info);
                 }
@@ -132,7 +132,7 @@ public class PickableEditorWindow : EditorWindow
             else if (existingPickableType == PickableType.Patron)
             {
                 existingPatronType = (PatronType)EditorGUILayout.EnumPopup("Patron Type", existingPatronType);
-                
+
                 if (existingPatronType == PatronType.None)
                 {
                     EditorGUILayout.HelpBox("Patron type must be selected", MessageType.Info);
@@ -146,8 +146,20 @@ public class PickableEditorWindow : EditorWindow
             {
                 SaveExistingPickableData();
             }
-            #endregion
         }
+
+        void LoadExistingData()
+        {
+            existingPickableName = existingPickableData.pickableName;
+            existingPickableDescription = existingPickableData.pickableDescription;
+            existingPickableIcon = existingPickableData.pickableIcon;
+            existingPickableType = existingPickableData.pickableType;
+            existingPickableValue = existingPickableData.pickableValue;
+            existingWeaponType = existingPickableData.weaponType;
+            existingPatronType = existingPickableData.patronType;
+            isPickableDataLoaded = true;
+        }
+        #endregion
     }
 
     private void SaveExistingPickableData()
@@ -170,6 +182,7 @@ public class PickableEditorWindow : EditorWindow
         EditorUtility.SetDirty(existingPickableData);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        isPickableDataLoaded = false;
     }
 
     private void SavePickableData()

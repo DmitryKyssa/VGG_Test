@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Resources/PatronDatas/NewPatron", menuName = "ScriptableObjects/Patron")]
+[CreateAssetMenu(fileName = "Assets/Resources/PatronsDatas/NewPatron", menuName = "ScriptableObjects/Patron")]
 public class PatronData : ScriptableObject
 {
     public string patronName;
