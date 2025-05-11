@@ -53,6 +53,8 @@ public class GameUIController : Singleton<GameUIController>
         UpdateEnemiesCount(maxEnemiesCount);
         UpdateHealth(maxHealth);
 
+        DontDestroyOnLoad(gameObject);
+
 #if UNITY_EDITOR //Just for debugging purposes
         LevelLoader levelLoader = FindFirstObjectByType<LevelLoader>();
         if (levelLoader == null)

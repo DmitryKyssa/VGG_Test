@@ -24,6 +24,8 @@ public class PickablesController : Singleton<PickablesController>
         );
 
         defaultLayerMask = LayerMask.GetMask("Default");
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnDrawGizmos()

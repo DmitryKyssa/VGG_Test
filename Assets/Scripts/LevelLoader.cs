@@ -8,6 +8,8 @@ public class LevelLoader : Singleton<LevelLoader>
     private string[] levelNames;
     private int currentLevelIndex = 0;
 
+    public bool IsLastLevel => currentLevelIndex == levelNames.Length - 1;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -49,12 +51,26 @@ public class LevelLoader : Singleton<LevelLoader>
         {
             return;
         }
+
+        ClearScene();
         LoadCurrentLevel();
+    }
+
+    private void ClearScene()
+    {
+        foreach (var obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            if (obj != gameObject && obj.name != "DebugUpdater")
+            {
+                Destroy(obj);
+            }
+        }
     }
 
     public void ReloadCurrentLevel()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
+        ClearScene();
         LoadCurrentLevel();
     }
 }

@@ -10,6 +10,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
     private void Awake()
     {
         currentHealth = maxHealth;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void TakeDamage(int damage)
@@ -37,7 +38,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     private void Die()
     {
-        GameUIController.Instance.ShowFinishScreen(GameUIController.LOSE_MESSAGE, isWin: false, isLastLevel: false);
+        GameUIController.Instance.ShowFinishScreen(GameUIController.LOSE_MESSAGE, isWin: false, LevelLoader.Instance.IsLastLevel);
         Time.timeScale = 0;
         PlayerMovementController.Instance.enabled = false;
     }

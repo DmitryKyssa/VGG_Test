@@ -10,8 +10,8 @@ public class EnemiesController : Singleton<EnemiesController>
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnDelay = 5f;
     [SerializeField] private List<Transform> patrolPoints;
-
     private ObjectPool<Enemy> enemyPool;
+    private int killedEnemiesCount = 0;
 
     public int EnemyCount => allEnemiesCount;
     public List<Transform> PatrolPoints => patrolPoints;
@@ -31,6 +31,8 @@ public class EnemiesController : Singleton<EnemiesController>
         StartCoroutine(SpawnInitialEnemies());
         GameUIController.Instance.UpdateEnemiesCount(enemyPool.CountActive);
         Enemy.EnemyKilled += EnemyKilling;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private IEnumerator SpawnInitialEnemies()
@@ -50,6 +52,12 @@ public class EnemiesController : Singleton<EnemiesController>
         ReturnEnemyToPool(enemy);
         GameUIController.Instance.ShowMessage(GameUIController.ENEMY_KILLED_MESSAGE);
         GameUIController.Instance.UpdateEnemiesCount(enemyPool.CountActive);
+
+        ++killedEnemiesCount;
+        if (killedEnemiesCount == allEnemiesCount)
+        {
+            GameUIController.Instance.ShowFinishScreen(GameUIController.WIN_MESSAGE, isWin: true, LevelLoader.Instance.IsLastLevel);
+        }
     }
 
     private void SpawnEnemy()
