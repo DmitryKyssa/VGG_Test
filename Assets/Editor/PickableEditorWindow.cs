@@ -66,7 +66,7 @@ public class PickableEditorWindow : EditorWindow
                 EditorGUILayout.HelpBox("Weapon type must be selected", MessageType.Info);
             }
         }
-        else if (pickableType == PickableType.Patrons)
+        else if (pickableType == PickableType.Patron)
         {
             patronType = (PatronType)EditorGUILayout.EnumPopup("Patron Type", patronType);
             pickableValue = 1;
@@ -129,7 +129,7 @@ public class PickableEditorWindow : EditorWindow
                 existingPickableValue = 1;
                 existingPatronType = PatronType.None;
             }
-            else if (existingPickableType == PickableType.Patrons)
+            else if (existingPickableType == PickableType.Patron)
             {
                 existingPatronType = (PatronType)EditorGUILayout.EnumPopup("Patron Type", existingPatronType);
                 

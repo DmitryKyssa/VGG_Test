@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class PickablesController : Singleton<PickablesController>
 {
     [SerializeField] private Transform[] pickablesSpawnPoints;
-    [SerializeField] private Pickable[] pickablePrefabs;
+    [SerializeField] private Pickable pickablePrefab;
     [SerializeField] private float delay = 20f;
     private int defaultLayerMask = 0;
+    private List<PickableData> pickableDatas;
 
     private ObjectPool<Pickable> pickablePool;
     public ObjectPool<Pickable> PickablePool => pickablePool;
@@ -40,6 +42,8 @@ public class PickablesController : Singleton<PickablesController>
 
     private IEnumerator Start()
     {
+        pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas").ToList();
+
         WaitForSeconds wait = new WaitForSeconds(delay);
 
         while (true)
@@ -57,8 +61,7 @@ public class PickablesController : Singleton<PickablesController>
 
     private Pickable CreatePickable()
     {
-        int prefabIndex = Random.Range(0, pickablePrefabs.Length);
-        Pickable pickable = Instantiate(pickablePrefabs[prefabIndex], Vector3.zero, Quaternion.identity);
+        Pickable pickable = Instantiate(pickablePrefab, Vector3.zero, Quaternion.identity);
         pickable.gameObject.SetActive(false);
         return pickable;
     }
@@ -90,12 +93,20 @@ public class PickablesController : Singleton<PickablesController>
             {
                 pickable.transform.position = pos;
                 pickable.gameObject.SetActive(true);
+                pickable.SetPickableData(GetPickableData());
                 return;
             }
         }
 
         Debug.LogWarning("No free spawn points found for pickable.");
         pickablePool.Release(pickable);
+    }
+
+    private PickableData GetPickableData()
+    {
+        //TODO: Check in Inventory if the pickable is already picked
+
+        return pickableDatas[Random.Range(0, pickableDatas.Count)];
     }
 
     private void OnReleasePickable(Pickable pickable)

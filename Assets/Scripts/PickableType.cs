@@ -3,5 +3,5 @@
     Health,
     Magazines,
     Weapon,
-    Patrons,
+    Patron,
 }
