@@ -23,6 +23,20 @@ public class WeaponController : Singleton<WeaponController>
         playerInput = GetComponentInParent<PlayerInput>();
         aimAction = playerInput.actions["Aim"];
         weapon = transform.GetComponentInChildren<Weapon>();
+
+        if (weapon == null)
+        {
+            Weapon prefab = InventorySystem.Instance.WeaponType.GetWeaponPrefab();
+            if (prefab != null)
+            {
+                weapon = Instantiate(prefab, transform);
+            }
+            else
+            {
+                Debug.LogError("No weapon prefab found for the current WeaponType.");
+            }
+        }
+
         defaultWeaponPosition = weapon.transform.position;
         defaultWeaponRotation = weapon.transform.rotation;
         aimedWeaponPosition = defaultWeaponPosition + new Vector3(0f, 0f, 0.4f);

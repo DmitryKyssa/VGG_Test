@@ -46,6 +46,8 @@ public class PlayerMovementController : Singleton<PlayerMovementController>
 
     private readonly float gravity = Physics.gravity.y;
 
+    public PlayerInput PlayerInput => playerInput;
+
     protected override void Awake()
     {
         base.Awake();

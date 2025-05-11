@@ -44,13 +44,28 @@ public class WeaponEnumGenerator
         enumContent.AppendLine("       {");
         enumContent.AppendLine("           case WeaponType.None:");
         enumContent.AppendLine("               return null;");
-        for (int i = 1; i < weaponTypes.Length; i++)
+        for (int i = 0; i < weaponTypes.Length; i++)
         {
             enumContent.AppendLine($"           case WeaponType.{weaponTypes[i]}:");
             enumContent.AppendLine($"               return Resources.Load<WeaponData>(\"WeaponsDatas/{weaponTypes[i]}\");");
         }
         enumContent.AppendLine("           default:");
         enumContent.AppendLine("               Debug.LogError(\"Weapon not found: \" + weaponType);");
+        enumContent.AppendLine("               return null;");
+        enumContent.AppendLine("        }");
+        enumContent.AppendLine("   }");
+        enumContent.AppendLine("");
+        enumContent.AppendLine("   public static Weapon GetWeaponPrefab(this WeaponType weaponType)");
+        enumContent.AppendLine("   {");
+        enumContent.AppendLine("       switch (weaponType)");
+        enumContent.AppendLine("       {");
+        for (int i = 0; i < weaponTypes.Length; i++)
+        {
+            enumContent.AppendLine($"           case WeaponType.{weaponTypes[i]}:");
+            enumContent.AppendLine($"               return Resources.Load<Weapon>(\"WeaponsPrefabs/{weaponTypes[i]}\");");
+        }
+        enumContent.AppendLine("           default:");
+        enumContent.AppendLine("               Debug.LogError(\"Weapon prefab not found: \" + weaponType);");
         enumContent.AppendLine("               return null;");
         enumContent.AppendLine("        }");
         enumContent.AppendLine("   }");

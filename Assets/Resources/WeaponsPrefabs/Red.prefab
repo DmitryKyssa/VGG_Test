@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5747325912801716048}
   - component: {fileID: 41258923765333047}
   m_Layer: 0
-  m_Name: BlueWeapon
+  m_Name: Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b387f2e16f9c53e47884a227b2aa60c9, type: 2}
+  - {fileID: 2100000, guid: dfc95abb53d881d4bab32f10267b5afb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1505521745696444386}
-  weaponData: {fileID: 11400000, guid: e6ff3e9cd5cda3a4d80ff804288d4ece, type: 2}
+  weaponData: {fileID: 11400000, guid: 36c52153aaf97e94b83fb0076f3927f4, type: 2}
 --- !u!1 &2131002765420537980
 GameObject:
   m_ObjectHideFlags: 0

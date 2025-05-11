@@ -18,12 +18,30 @@ public static class WeaponTypeExtensions
        {
            case WeaponType.None:
                return null;
+           case WeaponType.Black:
+               return Resources.Load<WeaponData>("WeaponsDatas/Black");
            case WeaponType.Blue:
-               return Resources.Load<WeaponData>("Weapons/Blue");
+               return Resources.Load<WeaponData>("WeaponsDatas/Blue");
            case WeaponType.Red:
-               return Resources.Load<WeaponData>("Weapons/Red");
+               return Resources.Load<WeaponData>("WeaponsDatas/Red");
            default:
                Debug.LogError("Weapon not found: " + weaponType);
+               return null;
+        }
+   }
+
+   public static Weapon GetWeaponPrefab(this WeaponType weaponType)
+   {
+       switch (weaponType)
+       {
+           case WeaponType.Black:
+               return Resources.Load<Weapon>("WeaponsPrefabs/Black");
+           case WeaponType.Blue:
+               return Resources.Load<Weapon>("WeaponsPrefabs/Blue");
+           case WeaponType.Red:
+               return Resources.Load<Weapon>("WeaponsPrefabs/Red");
+           default:
+               Debug.LogError("Weapon prefab not found: " + weaponType);
                return null;
         }
    }
