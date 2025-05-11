@@ -4,26 +4,27 @@ using UnityEngine;
 
 public enum WeaponType
 {
-    Black,
-    Blue,
-    Red,
+   None,
+   Black,
+   Blue,
+   Red,
 }
 
 public static class WeaponTypeExtensions
 {
-    public static WeaponData GetWeaponData(this WeaponType weaponType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.Black:
-                return Resources.Load<WeaponData>("Weapons/Black");
-            case WeaponType.Blue:
-                return Resources.Load<WeaponData>("Weapons/Blue");
-            case WeaponType.Red:
-                return Resources.Load<WeaponData>("Weapons/Red");
-            default:
-                Debug.LogError("Weapon not found: " + weaponType);
-                return null;
+   public static WeaponData GetWeaponData(this WeaponType weaponType)
+   {
+       switch (weaponType)
+       {
+           case WeaponType.None:
+               return null;
+           case WeaponType.Blue:
+               return Resources.Load<WeaponData>("Weapons/Blue");
+           case WeaponType.Red:
+               return Resources.Load<WeaponData>("Weapons/Red");
+           default:
+               Debug.LogError("Weapon not found: " + weaponType);
+               return null;
         }
-    }
+   }
 }

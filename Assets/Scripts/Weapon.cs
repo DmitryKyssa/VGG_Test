@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
     [SerializeField] private WeaponData weaponData;
+    private PatronData patronData;
     private float lastFireTime = 0f;
     private int currentMagazines;
     private int currentPatrons;
@@ -59,7 +60,7 @@ public class Weapon : MonoBehaviour
         {
             if (hit.collider.gameObject.TryGetComponent(out IDamageable damageable))
             {
-                damageable.TakeDamage(weaponData.damage);
+                damageable.TakeDamage(patronData.damage);
             }
         }
 

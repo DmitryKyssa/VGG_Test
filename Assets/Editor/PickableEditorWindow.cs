@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PickableEditorWindow : EditorWindow
 {
-    private const string PICKABLE_PATH = "Assets/Resources/Pickables/";
+    private const string PICKABLE_PATH = "Assets/Resources/PickablesDatas/";
 
     private PickableData pickableData;
     private string pickableName;
@@ -12,10 +12,12 @@ public class PickableEditorWindow : EditorWindow
     private PickableType pickableType;
     private int pickableValue;
     private WeaponType weaponType;
+    private PatronType patronType;
 
     private PickableData existingPickableData;
     private int existingPickableValue;
     private WeaponType existingWeaponType;
+    private PatronType existingPatronType;
     private string existingPickableName;
     private string existingPickableDescription;
     private Sprite existingPickableIcon;
@@ -39,18 +41,41 @@ public class PickableEditorWindow : EditorWindow
 
         if (pickableType == PickableType.Health)
         {
+            EditorGUILayout.HelpBox("Health value must be between 10 and 50", MessageType.Info);
             pickableValue = EditorGUILayout.IntField("Health Value", pickableValue);
             pickableValue = Mathf.Clamp(pickableValue, 10, 50);
+            weaponType = WeaponType.None;
+            patronType = PatronType.None;
         }
         else if (pickableType == PickableType.Magazines)
         {
+            EditorGUILayout.HelpBox("Magazine count must be between 1 and 10", MessageType.Info);
             pickableValue = EditorGUILayout.IntField("Magazine Count", pickableValue);
             pickableValue = Mathf.Clamp(pickableValue, 1, 10);
+            weaponType = WeaponType.None;
+            patronType = PatronType.None;
         }
         else if (pickableType == PickableType.Weapon)
         {
             weaponType = (WeaponType)EditorGUILayout.EnumPopup("Weapon Type", weaponType);
             pickableValue = 1;
+            patronType = PatronType.None;
+
+            if (weaponType == WeaponType.None)
+            {
+                EditorGUILayout.HelpBox("Weapon type must be selected", MessageType.Info);
+            }
+        }
+        else if (pickableType == PickableType.Patrons)
+        {
+            patronType = (PatronType)EditorGUILayout.EnumPopup("Patron Type", patronType);
+            pickableValue = 1;
+            weaponType = WeaponType.None;
+
+            if (patronType == PatronType.None)
+            {
+                EditorGUILayout.HelpBox("Patron type must be selected", MessageType.Info);
+            }
         }
 
         if (GUILayout.Button("Save"))
@@ -76,26 +101,46 @@ public class PickableEditorWindow : EditorWindow
             existingPickableIcon = (Sprite)EditorGUILayout.ObjectField("Icon", existingPickableIcon, typeof(Sprite), false);
             existingPickableType = (PickableType)EditorGUILayout.EnumPopup("Type", existingPickableType);
 
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             if (existingPickableType == PickableType.Health)
             {
-                EditorGUILayout.HelpBox("Health value must be between 10 and 50", MessageType.Info); //Bug => This message is not shown
-                existingPickableValue = EditorGUILayout.IntField("Health Value", existingPickableValue);              
+                EditorGUILayout.HelpBox("Health value must be between 10 and 50", MessageType.Info);
+                existingPickableValue = EditorGUILayout.IntField("Health Value", existingPickableValue);
                 existingPickableValue = Mathf.Clamp(existingPickableValue, 10, 50);
+                existingWeaponType = WeaponType.None;
+                existingPatronType = PatronType.None;
             }
             else if (existingPickableType == PickableType.Magazines)
             {
                 existingPickableValue = EditorGUILayout.IntField("Magazine Count", existingPickableValue);
                 EditorGUILayout.HelpBox("Magazine count must be between 1 and 10", MessageType.Info);
                 existingPickableValue = Mathf.Clamp(existingPickableValue, 1, 10);
+                existingWeaponType = WeaponType.None;
+                existingPatronType = PatronType.None;
             }
             else if (existingPickableType == PickableType.Weapon)
             {
                 existingWeaponType = (WeaponType)EditorGUILayout.EnumPopup("Weapon Type", existingWeaponType);
-                EditorGUILayout.HelpBox("Weapon type must be selected", MessageType.Info);
+                
+                if(existingWeaponType == WeaponType.None)
+                {
+                    EditorGUILayout.HelpBox("Weapon type must be selected", MessageType.Info);
+                }
+
                 existingPickableValue = 1;
+                existingPatronType = PatronType.None;
             }
-            EditorGUILayout.EndVertical();  
+            else if (existingPickableType == PickableType.Patrons)
+            {
+                existingPatronType = (PatronType)EditorGUILayout.EnumPopup("Patron Type", existingPatronType);
+                
+                if (existingPatronType == PatronType.None)
+                {
+                    EditorGUILayout.HelpBox("Patron type must be selected", MessageType.Info);
+                }
+
+                existingPickableValue = 1;
+                existingWeaponType = WeaponType.None;
+            }
 
             if (GUILayout.Button("Save Changes"))
             {
@@ -120,6 +165,7 @@ public class PickableEditorWindow : EditorWindow
         existingPickableData.pickableType = existingPickableType;
         existingPickableData.pickableValue = existingPickableValue;
         existingPickableData.weaponType = existingWeaponType;
+        existingPickableData.patronType = existingPatronType;
 
         EditorUtility.SetDirty(existingPickableData);
         AssetDatabase.SaveAssets();
@@ -147,6 +193,7 @@ public class PickableEditorWindow : EditorWindow
         pickableData.pickableType = pickableType;
         pickableData.pickableValue = pickableValue;
         pickableData.weaponType = weaponType;
+        pickableData.patronType = patronType;
         AssetDatabase.CreateAsset(pickableData, path);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Pickable : MonoBehaviour
 {
-    [SerializeField] private PickableData pickableData;
+    private PickableData pickableData;
     private Collider pickableCollider;
 
     private void Start()

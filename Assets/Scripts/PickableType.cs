@@ -2,5 +2,6 @@
 {
     Health,
     Magazines,
-    Weapon
+    Weapon,
+    Patrons,
 }

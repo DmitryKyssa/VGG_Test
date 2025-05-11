@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec2c935e899b01c49ad2701388a64d96, type: 3}
-  m_Name: Black
+  m_Script: {fileID: 11500000, guid: a39f4e52a83a7d546bbb40d3ad042f5d, type: 3}
+  m_Name: Blue
   m_EditorClassIdentifier: 
-  weaponName: Black
-  fireRate: 0.1
-  damage: 5
-  range: 400
-  reloadTime: 22
-  magazines: 5
-  patronsPerMagazine: 15
+  patronName: Blue
+  damage: 15
+  gunPointEffect: {fileID: 0}

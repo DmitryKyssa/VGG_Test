@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec2c935e899b01c49ad2701388a64d96, type: 3}
-  m_Name: Red
+  m_Name: Blue
   m_EditorClassIdentifier: 
-  weaponName: Red
-  fireRate: 1
-  damage: 10
-  range: 100
-  reloadTime: 20
-  magazines: 3
-  patronsPerMagazine: 5
+  weaponName: Blue
+  fireRate: 2
+  patronData: {fileID: 11400000, guid: d091ca57dc736284d931846c1a4fac1d, type: 2}
+  range: 300
+  reloadTime: 12
+  magazines: 7
+  patronsPerMagazine: 4

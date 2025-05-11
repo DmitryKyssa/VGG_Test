@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afc764ab4bb36a4f8c61aaa15c130ad, type: 3}
-  m_Name: WeaponBlue
+  m_Name: WeaponBlack
   m_EditorClassIdentifier: 
-  pickableName: WeaponBlue
-  pickableDescription: Gives Blue weapon
+  pickableName: WeaponBlack
+  pickableDescription: Gives black weapon
   pickableIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   pickableType: 2
   pickableValue: 1
   weaponType: 1
+  patronType: 0

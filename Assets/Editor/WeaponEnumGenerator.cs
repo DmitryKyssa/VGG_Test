@@ -24,14 +24,13 @@ public class WeaponEnumGenerator
         enumContent.AppendLine("");
         enumContent.AppendLine("public enum WeaponType");
         enumContent.AppendLine("{");
+        enumContent.AppendLine("   None,");
 
-        string[] weaponTypes = Resources.LoadAll<WeaponData>("Weapons").Select(w => w.weaponName).ToArray();
+        string[] weaponTypes = Resources.LoadAll<WeaponData>("WeaponsDatas").Select(w => w.weaponName).ToArray();
 
         for (int i = 0; i < weaponTypes.Length; i++)
         {
-            string weaponType = weaponTypes[i];
-            string sanitizedWeaponType = SanitizeWeaponName(weaponType);
-            enumContent.AppendLine($"   {sanitizedWeaponType},");
+            enumContent.AppendLine($"   {weaponTypes[i]},");
         }
 
         enumContent.AppendLine("}");
@@ -43,12 +42,12 @@ public class WeaponEnumGenerator
         enumContent.AppendLine("   {");
         enumContent.AppendLine("       switch (weaponType)");
         enumContent.AppendLine("       {");
-        for (int i = 0; i < weaponTypes.Length; i++)
+        enumContent.AppendLine("           case WeaponType.None:");
+        enumContent.AppendLine("               return null;");
+        for (int i = 1; i < weaponTypes.Length; i++)
         {
-            string weaponType = weaponTypes[i];
-            string sanitizedWeaponType = SanitizeWeaponName(weaponType);
-            enumContent.AppendLine($"           case WeaponType.{sanitizedWeaponType}:");
-            enumContent.AppendLine($"               return Resources.Load<WeaponData>(\"Weapons/{weaponType}\");");
+            enumContent.AppendLine($"           case WeaponType.{weaponTypes[i]}:");
+            enumContent.AppendLine($"               return Resources.Load<WeaponData>(\"WeaponsDatas/{weaponTypes[i]}\");");
         }
         enumContent.AppendLine("           default:");
         enumContent.AppendLine("               Debug.LogError(\"Weapon not found: \" + weaponType);");
@@ -61,10 +60,5 @@ public class WeaponEnumGenerator
         AssetDatabase.Refresh();
 
         Debug.Log($"Weapon enum generated at {ENUM_FILE_PATH}");
-    }
-
-    private static string SanitizeWeaponName(string weaponName)
-    {
-        return weaponName.Replace(" ", "_").Replace("-", "_").Replace(".", "_");
     }
 }
