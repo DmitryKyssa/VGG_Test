@@ -58,7 +58,7 @@ public class PickablesController : Singleton<PickablesController>
     private Pickable CreatePickable()
     {
         int prefabIndex = Random.Range(0, pickablePrefabs.Length);
-        Pickable pickable = Instantiate(pickablePrefabs[prefabIndex], Vector3.zero, Quaternion.identity, transform);
+        Pickable pickable = Instantiate(pickablePrefabs[prefabIndex], Vector3.zero, Quaternion.identity);
         pickable.gameObject.SetActive(false);
         return pickable;
     }

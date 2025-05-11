@@ -48,7 +48,7 @@ public class GameUIController : Singleton<GameUIController>
         base.Awake();
         messageText.gameObject.SetActive(false);
         messageText.text = string.Empty;
-        Reload();
+        Initialize();
 
         DontDestroyOnLoad(gameObject);
 
@@ -64,12 +64,13 @@ public class GameUIController : Singleton<GameUIController>
 #endif
     }
 
-    public void Reload()
+    public void Initialize()
     {
         maxHealth = PlayerHealthController.Instance.MaxHealth;
         maxEnemiesCount = EnemiesController.Instance.EnemyCount;
         UpdateEnemiesCount(maxEnemiesCount);
         UpdateHealth(maxHealth);
+        HideFinishScreen();
     }
 
     private void Start()

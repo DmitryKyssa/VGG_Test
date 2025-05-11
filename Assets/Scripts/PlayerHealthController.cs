@@ -14,7 +14,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Reload()
+    public void Initialize()
     {
         currentHealth = maxHealth;
     }

@@ -17,7 +17,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
             if (instance == null)
             {
-                instance = FindFirstObjectByType<T>();
+                instance = FindFirstObjectByType<T>(FindObjectsInactive.Include);
                 if (instance == null)
                 {
                     Debug.LogError($"No instance of {typeof(T)} found in the scene. Please ensure it is present.");

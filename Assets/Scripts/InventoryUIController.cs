@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InventoryUIController : Singleton<InventoryUIController>
@@ -23,5 +24,8 @@ public class InventoryUIController : Singleton<InventoryUIController>
     private Dictionary<bool, Image> magazinesSlots = new Dictionary<bool, Image>();
     private Dictionary<bool, Image> healersSlots = new Dictionary<bool, Image>();
 
-
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 }

@@ -76,10 +76,10 @@ public class LevelLoader : Singleton<LevelLoader>
     public void ReloadCurrentLevel()
     {
         ClearScene();
-        GameUIController.Instance.HideFinishScreen();
-        PlayerHealthController.Instance.Reload();
-        EnemiesController.Instance.Reload();
-        GameUIController.Instance.Reload();
+        PlayerHealthController.Instance.Initialize();
+        EnemiesController.Instance.Iniztialize();
+        InventorySystem.Instance.Initialize();
+        GameUIController.Instance.Initialize();
         LoadCurrentLevel();
     }
 }

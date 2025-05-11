@@ -36,7 +36,7 @@ public class EnemiesController : Singleton<EnemiesController>
         DontDestroyOnLoad(gameObject);
     }
 
-    public void Reload()
+    public void Iniztialize()
     {
         killedEnemiesCount = 0;
         enemyPool.Clear();
