@@ -17,8 +17,9 @@ public class WeaponController : Singleton<WeaponController>
 
     public Weapon Weapon => weapon;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         playerInput = GetComponentInParent<PlayerInput>();
         aimAction = playerInput.actions["Aim"];
         weapon = transform.GetComponentInChildren<Weapon>();

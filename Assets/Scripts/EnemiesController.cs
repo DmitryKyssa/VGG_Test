@@ -16,8 +16,9 @@ public class EnemiesController : Singleton<EnemiesController>
     public int EnemyCount => allEnemiesCount;
     public List<Transform> PatrolPoints => patrolPoints;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         patrolPoints.AddRange(spawnPoints);
 
         enemyPool = new ObjectPool<Enemy>(
@@ -33,6 +34,12 @@ public class EnemiesController : Singleton<EnemiesController>
         Enemy.EnemyKilled += EnemyKilling;
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void Reload()
+    {
+        killedEnemiesCount = 0;
+        enemyPool.Clear();
     }
 
     private IEnumerator SpawnInitialEnemies()

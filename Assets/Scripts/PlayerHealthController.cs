@@ -7,22 +7,28 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     public int MaxHealth => maxHealth;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         currentHealth = maxHealth;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void Reload()
+    {
+        currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
-        GameUIController.Instance.UpdateHealth(currentHealth);
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             Die();
         }
+        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
+        GameUIController.Instance.UpdateHealth(currentHealth);
     }
 
     public void Heal(int amount)
@@ -38,8 +44,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     private void Die()
     {
-        GameUIController.Instance.ShowFinishScreen(GameUIController.LOSE_MESSAGE, isWin: false, LevelLoader.Instance.IsLastLevel);
         Time.timeScale = 0;
-        PlayerMovementController.Instance.enabled = false;
+        GameUIController.Instance.ShowFinishScreen(GameUIController.LOSE_MESSAGE, isWin: false, LevelLoader.Instance.IsLastLevel);
     }
 }

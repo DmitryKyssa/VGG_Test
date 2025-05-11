@@ -43,15 +43,12 @@ public class GameUIController : Singleton<GameUIController>
     private int maxHealth;
     private int maxEnemiesCount;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         messageText.gameObject.SetActive(false);
         messageText.text = string.Empty;
-        maxHealth = PlayerHealthController.Instance.MaxHealth;
-        maxEnemiesCount = EnemiesController.Instance.EnemyCount;
-
-        UpdateEnemiesCount(maxEnemiesCount);
-        UpdateHealth(maxHealth);
+        Reload();
 
         DontDestroyOnLoad(gameObject);
 
@@ -65,6 +62,14 @@ public class GameUIController : Singleton<GameUIController>
             levelLoader.GetCurrentLevelIndex();
         }
 #endif
+    }
+
+    public void Reload()
+    {
+        maxHealth = PlayerHealthController.Instance.MaxHealth;
+        maxEnemiesCount = EnemiesController.Instance.EnemyCount;
+        UpdateEnemiesCount(maxEnemiesCount);
+        UpdateHealth(maxHealth);
     }
 
     private void Start()
@@ -112,6 +117,11 @@ public class GameUIController : Singleton<GameUIController>
         finishButton.enabled = true;
         finishButton.onClick.RemoveAllListeners();
         finishButton.onClick.AddListener(() => OnFinishButton(isWin, isLastLevel));
+    }
+
+    public void HideFinishScreen()
+    {
+        finishScreen.SetActive(false);
     }
 
     public void OnFinishButton(bool isWin, bool isLastLevel)

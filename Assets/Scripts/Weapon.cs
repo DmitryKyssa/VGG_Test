@@ -90,6 +90,7 @@ public class Weapon : MonoBehaviour
 
     private void OnDisable()
     {
+        fireAction.performed -= ctx => Fire();
         fireAction.Disable();
     }
 }

@@ -13,8 +13,9 @@ public class PickablesController : Singleton<PickablesController>
     private ObjectPool<Pickable> pickablePool;
     public ObjectPool<Pickable> PickablePool => pickablePool;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         pickablePool = new ObjectPool<Pickable>(
             CreatePickable,
             OnGetPickable,

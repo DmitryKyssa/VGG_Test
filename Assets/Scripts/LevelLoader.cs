@@ -10,8 +10,9 @@ public class LevelLoader : Singleton<LevelLoader>
 
     public bool IsLastLevel => currentLevelIndex == levelNames.Length - 1;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         DontDestroyOnLoad(gameObject);
 
         levelNames = new string[SceneManager.sceneCountInBuildSettings];
@@ -40,6 +41,7 @@ public class LevelLoader : Singleton<LevelLoader>
 
     public void LoadCurrentLevel()
     {
+        Time.timeScale = 1;
         string levelName = levelNames[currentLevelIndex];
         SceneManager.LoadScene(levelName);
     }
@@ -53,14 +55,18 @@ public class LevelLoader : Singleton<LevelLoader>
         }
 
         ClearScene();
+        GameUIController.Instance.HideFinishScreen();
         LoadCurrentLevel();
     }
 
     private void ClearScene()
     {
-        foreach (var obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        foreach (GameObject obj in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
-            if (obj != gameObject && obj.name != "DebugUpdater")
+            if (obj == gameObject || obj.name == "[Debug Updater]")
+                continue;
+
+            if (obj.scene == SceneManager.GetActiveScene())
             {
                 Destroy(obj);
             }
@@ -69,8 +75,11 @@ public class LevelLoader : Singleton<LevelLoader>
 
     public void ReloadCurrentLevel()
     {
-        Time.timeScale = 1f;
         ClearScene();
+        GameUIController.Instance.HideFinishScreen();
+        PlayerHealthController.Instance.Reload();
+        EnemiesController.Instance.Reload();
+        GameUIController.Instance.Reload();
         LoadCurrentLevel();
     }
 }
