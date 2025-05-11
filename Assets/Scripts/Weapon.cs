@@ -61,8 +61,6 @@ public class Weapon : MonoBehaviour
             {
                 damageable.TakeDamage(weaponData.damage);
             }
-
-            Debug.Log($"Hit: {hit.collider.name}");
         }
 
         lastFireTime = Time.time;

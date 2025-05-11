@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -8,15 +9,19 @@ public class EnemiesController : Singleton<EnemiesController>
     [SerializeField] private int allEnemiesCount = 5;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnDelay = 5f;
+    [SerializeField] private List<Transform> patrolPoints;
 
     private ObjectPool<Enemy> enemyPool;
 
     public int EnemyCount => allEnemiesCount;
+    public List<Transform> PatrolPoints => patrolPoints;
 
     private void Awake()
     {
+        patrolPoints.AddRange(spawnPoints);
+
         enemyPool = new ObjectPool<Enemy>(
-            createFunc: () => Instantiate(enemyPrefab, transform),
+            createFunc: () => Instantiate(enemyPrefab),
             actionOnGet: enemy => enemy.gameObject.SetActive(true),
             actionOnRelease: enemy => enemy.gameObject.SetActive(false),
             actionOnDestroy: enemy => Destroy(enemy.gameObject),

@@ -10,8 +10,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     private void Awake()
     {
-        currentHealth = maxHealth - 20;
-        GameUIController.Instance.UpdateHealth(currentHealth);
+        currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
@@ -37,7 +36,6 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     private void Die()
     {
-        // Handle player death (e.g., respawn, game over, etc.)
         Debug.Log("Player has died.");
     }
 }

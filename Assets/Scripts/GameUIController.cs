@@ -40,6 +40,9 @@ public class GameUIController : Singleton<GameUIController>
         messageText.text = string.Empty;
         maxHealth = PlayerHealthController.Instance.MaxHealth;
         maxEnemiesCount = EnemiesController.Instance.EnemyCount;
+
+        UpdateEnemiesCount(maxEnemiesCount);
+        UpdateHealth(maxHealth);
     }
 
     private void Start()
