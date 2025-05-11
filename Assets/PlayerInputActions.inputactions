@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "fa35b9ae-6bab-4a9a-93c3-6ebf8e0e2a3d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Run",
                     "type": "Button",
                     "id": "fa44175b-aba6-4277-96e7-42369ead3c9d",
@@ -54,6 +45,24 @@
                     "name": "Aim",
                     "type": "Button",
                     "id": "a1511275-7d81-472b-898e-39a44a55022b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "1970dcff-41c2-4d83-9281-622631e404ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "7615af65-6bf4-4e51-aada-c42631f2cfc3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -140,17 +149,6 @@
                 },
                 {
                     "name": "",
-                    "id": "6f8f37b9-d9de-4a46-96c8-a4c1e0f2b38b",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0d00302f-ce25-4f46-8a76-b5dedb4a6e8d",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
@@ -168,6 +166,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e875c1d-30a4-4bc6-978d-6f2768485997",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45ca349b-887e-46c4-baa3-9e91071276ad",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

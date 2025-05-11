@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Green
   m_EditorClassIdentifier: 
   patronName: Green
-  damage: 10
+  damage: 20
+  icon: {fileID: 0}
   gunPointEffect: {fileID: 0}

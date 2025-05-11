@@ -1,0 +1,10 @@
+{
+  "weaponTypes": {
+    "Red": true
+  },
+  "patronTypes": {
+    "Blue": true
+  },
+  "healers": {},
+  "magazines": {}
+}

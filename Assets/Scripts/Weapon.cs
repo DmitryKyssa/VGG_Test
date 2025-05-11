@@ -15,15 +15,20 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        fireAction = new InputAction("Fire", binding: "<Mouse>/leftButton");
-        fireAction.performed += ctx => Fire();
-        fireAction.Enable();
-
         currentMagazines = weaponData.magazines;
         currentPatrons = weaponData.patronsPerMagazine;
 
         GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
         GameUIController.Instance.UpdatePatrons(currentPatrons, weaponData.patronsPerMagazine);
+
+        patronData = Resources.Load<PatronData>($"PatronsDatas/{InventorySystem.Instance.PatronType}");
+    }
+
+    private void OnEnable()
+    {
+        fireAction = PlayerMovementController.Instance.PlayerInput.actions["Fire"];
+        fireAction.performed += ctx => Fire();
+        fireAction.Enable();
     }
 
     private void Fire()

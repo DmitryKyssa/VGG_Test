@@ -55,7 +55,6 @@ public class LevelLoader : Singleton<LevelLoader>
         }
 
         ClearScene();
-        GameUIController.Instance.HideFinishScreen();
         LoadCurrentLevel();
     }
 

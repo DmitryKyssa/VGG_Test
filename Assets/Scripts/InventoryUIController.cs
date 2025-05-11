@@ -1,20 +1,17 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InventoryUIController : Singleton<InventoryUIController>
 {
-    [SerializeField] private Image[] weaponsImages = new Image[3];
-    [SerializeField] private Image[] magazinesImages = new Image[3];
-    [SerializeField] private Image[] healersImages = new Image[3];
+    [SerializeField] private Button[] weaponsImages = new Button[3];
+    [SerializeField] private Button[] magazinesImages = new Button[3];
+    [SerializeField] private Button[] healersImages = new Button[3];
 
     [SerializeField] private TextMeshProUGUI weaponsCountText;
     [SerializeField] private TextMeshProUGUI magazinesCountText;
     [SerializeField] private TextMeshProUGUI healersCountText;
-
-    [SerializeField] private Sprite emptySprite;
 
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Button applyButton;

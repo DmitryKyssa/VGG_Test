@@ -61,6 +61,15 @@ public class GameUIController : Singleton<GameUIController>
             DontDestroyOnLoad(levelLoaderObject);
             levelLoader.GetCurrentLevelIndex();
         }
+
+        InventorySystem inventorySystem = FindFirstObjectByType<InventorySystem>();
+        if (inventorySystem == null)
+        {
+            GameObject inventorySystemObject = new GameObject("InventorySystem");
+            inventorySystem = inventorySystemObject.AddComponent<InventorySystem>();
+            DontDestroyOnLoad(inventorySystemObject);
+            inventorySystem.ActivateInput();
+        }
 #endif
     }
 
@@ -120,7 +129,7 @@ public class GameUIController : Singleton<GameUIController>
         finishButton.onClick.AddListener(() => OnFinishButton(isWin, isLastLevel));
     }
 
-    public void HideFinishScreen()
+    private void HideFinishScreen()
     {
         finishScreen.SetActive(false);
     }
@@ -130,6 +139,7 @@ public class GameUIController : Singleton<GameUIController>
         if (isWin && !isLastLevel)
         {
             LevelLoader.Instance.LoadNextLevel();
+            HideFinishScreen();
         }
         else if (isWin && isLastLevel)
         {
