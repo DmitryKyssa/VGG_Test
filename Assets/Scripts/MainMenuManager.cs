@@ -21,6 +21,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private void OnExitButtonClicked()
     {
+        InventorySystem.Instance.SaveInventory();
         Application.Quit();
 
 #if UNITY_EDITOR

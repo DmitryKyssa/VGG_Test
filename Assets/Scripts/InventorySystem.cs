@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -69,6 +71,13 @@ public class InventorySystem : Singleton<InventorySystem>
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
+        StartCoroutine(AsyncLoadInventory());
+    }
+
+    private IEnumerator AsyncLoadInventory()
+    {
+        yield return new WaitForSeconds(1f);
+        LoadInventory();
     }
 
     public void ActivateInput()
@@ -80,7 +89,7 @@ public class InventorySystem : Singleton<InventorySystem>
 
     public void Initialize()
     {
-        inventoryUI = InventoryUIController.Instance.gameObject;
+        inventoryUI = FindFirstObjectByType<InventoryUIController>(FindObjectsInactive.Include).gameObject;
         if (inventoryUI.activeSelf)
         {
             inventoryUI.SetActive(false);
@@ -109,12 +118,36 @@ public class InventorySystem : Singleton<InventorySystem>
 
         if(!File.Exists(path))
         {
-            inventoryData.weaponTypes.Add(WeaponType.Red, true); //default weapon
-            inventoryData.patronTypes.Add(PatronType.Blue, true); //default patron
+            SetDefaultData();
         }
 
         string json = JsonConvert.SerializeObject(inventoryData, Formatting.Indented);
         File.WriteAllText(path, json);
+    }
+
+    private void SetDefaultData()
+    {
+        inventoryData.weaponTypes.Add(WeaponType.Red, true); //default weapon
+        inventoryData.weaponTypes.Add(WeaponType.Black, false);
+        inventoryData.weaponTypes.Add(WeaponType.Blue, false);
+
+        inventoryData.patronTypes.Add(PatronType.Blue, true); //default patron
+        inventoryData.patronTypes.Add(PatronType.Pink, false);
+        inventoryData.patronTypes.Add(PatronType.Green, false);
+
+        var pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas"); 
+
+        int[] healers = pickableDatas.Select(p => int.Parse(p.name.Replace("Health", ""))).ToArray();
+        foreach (int healer in healers)
+        {
+            inventoryData.healers.Add(healer, 0);
+        }
+
+        int[] magazines = pickableDatas.Select(p => int.Parse(p.name.Replace("Magazines", ""))).ToArray();
+        foreach (int magazine in magazines)
+        {
+            inventoryData.magazines.Add(magazine, 0);
+        }
     }
 
     public void LoadInventory()
@@ -128,7 +161,11 @@ public class InventorySystem : Singleton<InventorySystem>
         }
         else
         {
-            Debug.LogError("Inventory file not found!");
+            Debug.LogWarning("Inventory file not found! Creating new!");
+
+            SetDefaultData();
+            string json = JsonConvert.SerializeObject(inventoryData, Formatting.Indented);
+            File.WriteAllText(path, json);
         }
     }
 

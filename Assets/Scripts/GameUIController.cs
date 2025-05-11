@@ -143,6 +143,7 @@ public class GameUIController : Singleton<GameUIController>
         }
         else if (isWin && isLastLevel)
         {
+            InventorySystem.Instance.SaveInventory();
             Application.Quit();
 
 #if UNITY_EDITOR

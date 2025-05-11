@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickableName: Health20
   pickableDescription: 
-  pickableIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  pickableIcon: {fileID: 21300000, guid: 25d3c9e05994a9740a7c9cd9b5f5881b, type: 3}
   pickableType: 0
   pickableValue: 20
   weaponType: 0

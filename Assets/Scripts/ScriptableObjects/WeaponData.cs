@@ -4,7 +4,6 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     public string weaponName;
-    public Sprite icon;
     public float fireRate;
     public float range;
     public float reloadTime;

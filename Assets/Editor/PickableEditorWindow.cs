@@ -8,7 +8,6 @@ public class PickableEditorWindow : EditorWindow
     private PickableData pickableData;
     private string pickableName;
     private string pickableDescription;
-    private Sprite pickableIcon;
     private PickableType pickableType;
     private int pickableValue;
     private WeaponType weaponType;
@@ -20,7 +19,6 @@ public class PickableEditorWindow : EditorWindow
     private PatronType existingPatronType;
     private string existingPickableName;
     private string existingPickableDescription;
-    private Sprite existingPickableIcon;
     private PickableType existingPickableType;
 
     private bool isPickableDataLoaded = false;
@@ -38,7 +36,6 @@ public class PickableEditorWindow : EditorWindow
 
         pickableName = EditorGUILayout.TextField("Name", pickableName);
         pickableDescription = EditorGUILayout.TextField("Description", pickableDescription);
-        pickableIcon = (Sprite)EditorGUILayout.ObjectField("Icon", pickableIcon, typeof(Sprite), false);
         pickableType = (PickableType)EditorGUILayout.EnumPopup("Type", pickableType);
 
         if (pickableType == PickableType.Health)
@@ -98,7 +95,6 @@ public class PickableEditorWindow : EditorWindow
         {
             existingPickableName = EditorGUILayout.TextField("Name", existingPickableName);
             existingPickableDescription = EditorGUILayout.TextField("Description", existingPickableDescription);
-            existingPickableIcon = (Sprite)EditorGUILayout.ObjectField("Icon", existingPickableIcon, typeof(Sprite), false);
             existingPickableType = (PickableType)EditorGUILayout.EnumPopup("Type", existingPickableType);
 
             if (existingPickableType == PickableType.Health)
@@ -152,7 +148,6 @@ public class PickableEditorWindow : EditorWindow
         {
             existingPickableName = existingPickableData.pickableName;
             existingPickableDescription = existingPickableData.pickableDescription;
-            existingPickableIcon = existingPickableData.pickableIcon;
             existingPickableType = existingPickableData.pickableType;
             existingPickableValue = existingPickableData.pickableValue;
             existingWeaponType = existingPickableData.weaponType;
@@ -173,7 +168,6 @@ public class PickableEditorWindow : EditorWindow
 
         existingPickableData.pickableName = existingPickableName;
         existingPickableData.pickableDescription = existingPickableDescription;
-        existingPickableData.pickableIcon = existingPickableIcon;
         existingPickableData.pickableType = existingPickableType;
         existingPickableData.pickableValue = existingPickableValue;
         existingPickableData.weaponType = existingWeaponType;
@@ -187,10 +181,9 @@ public class PickableEditorWindow : EditorWindow
 
     private void SavePickableData()
     {
-        if (string.IsNullOrEmpty(pickableName) || pickableIcon == null)
+        if (string.IsNullOrEmpty(pickableName))
         {
-            Debug.LogError("Pickable name and icon cannot be empty.");
-            EditorGUILayout.HelpBox("Pickable name and icon cannot be empty.", MessageType.Error);
+            EditorGUILayout.HelpBox("Pickable name cannot be empty.", MessageType.Error);
             return;
         }
 
@@ -202,7 +195,6 @@ public class PickableEditorWindow : EditorWindow
         pickableData = CreateInstance<PickableData>();
         pickableData.pickableName = pickableName;
         pickableData.pickableDescription = pickableDescription;
-        pickableData.pickableIcon = pickableIcon;
         pickableData.pickableType = pickableType;
         pickableData.pickableValue = pickableValue;
         pickableData.weaponType = weaponType;

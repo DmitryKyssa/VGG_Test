@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5afc764ab4bb36a4f8c61aaa15c130ad, type: 3}
-  m_Name: Magazines2
+  m_Name: PatronBlue
   m_EditorClassIdentifier: 
-  pickableName: Magazines2
-  pickableDescription: Gives 2 magazines
-  pickableIcon: {fileID: 21300000, guid: 44a17b826a304334f864b1155795ab5c, type: 3}
-  pickableType: 1
-  pickableValue: 2
+  pickableName: PatronBlue
+  pickableDescription: 
+  pickableIcon: {fileID: 21300000, guid: 67bce325b5274134aad57c1e7dcc877d, type: 3}
+  pickableType: 3
+  pickableValue: 1
   weaponType: 0
-  patronType: 0
+  patronType: 1
