@@ -1,0 +1,60 @@
+﻿using System.IO;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+public class LevelLoader : Singleton<LevelLoader>
+{
+    private string[] levelNames;
+    private int currentLevelIndex = 0;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+
+        levelNames = new string[SceneManager.sceneCountInBuildSettings];
+        for (int i = 0; i < levelNames.Length; i++)
+        {
+            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+            levelNames[i] = Path.GetFileNameWithoutExtension(scenePath);
+            Debug.Log($"Level {i}: {levelNames[i]}");
+        }
+
+#if UNITY_EDITOR
+        // This is just for debugging purposes. By clicking on Tab next level will be loaded.
+        InputAction debugAction = new InputAction(type: InputActionType.Button);
+        debugAction.AddCompositeBinding("ButtonWithOneModifier")
+            .With("Modifier", "<Keyboard>/tab")
+            .With("Button", "<Keyboard>/tab");
+        debugAction.performed += ctx => LoadNextLevel();
+        debugAction.Enable();
+#endif
+    }
+
+    public void GetCurrentLevelIndex()
+    {
+        currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+    }
+
+    public void LoadCurrentLevel()
+    {
+        string levelName = levelNames[currentLevelIndex];
+        SceneManager.LoadScene(levelName);
+    }
+
+    public void LoadNextLevel()
+    {
+        currentLevelIndex++;
+        if (currentLevelIndex >= levelNames.Length)
+        {
+            return;
+        }
+        LoadCurrentLevel();
+    }
+
+    public void ReloadCurrentLevel()
+    {
+        Time.timeScale = 1f; 
+        LoadCurrentLevel();
+    }
+}

@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUIController : Singleton<GameUIController>
 {
+    [Header("in-game UI")]
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI magazinesText;
     [SerializeField] private TextMeshProUGUI patronesText;
     [SerializeField] private TextMeshProUGUI enemiesCountText;
     [SerializeField] private TextMeshProUGUI messageText;
 
+    [Header("Finish Screen")]
     [SerializeField] private GameObject finishScreen;
     [SerializeField] private TextMeshProUGUI finishText;
+    [SerializeField] private Button finishButton;
+    [SerializeField] private TextMeshProUGUI finishButtonText;
 
     private const string HEALTH_TEXT_FORMAT = "Health: {0}/{1}";
     private const string MAGAZINES_TEXT_FORMAT = "Magazines: {0}/{1}";
@@ -25,8 +30,12 @@ public class GameUIController : Singleton<GameUIController>
     public const string ENEMY_SPAWNED_MESSAGE = "Enemy Spawned!";
     public const string PATRONS_CANCELED_MESSAGE = "Patrons Cancelled!";
 
-    private const string WIN_MESSAGE = "You Win!";
-    private const string LOSE_MESSAGE = "You Lose!";
+    public const string WIN_MESSAGE = "You Win!";
+    public const string LOSE_MESSAGE = "You Lose!";
+
+    private const string NEXT_LEVEL_BUTTON_TEXT = "Next Level";
+    private const string RETRY_BUTTON_TEXT = "Retry";
+    private const string CLOSE_BUTTON_TEXT = "Close";
 
     private readonly Queue<string> messageQueue = new Queue<string>();
     private readonly float delay = 1f;
@@ -43,6 +52,17 @@ public class GameUIController : Singleton<GameUIController>
 
         UpdateEnemiesCount(maxEnemiesCount);
         UpdateHealth(maxHealth);
+
+#if UNITY_EDITOR //Just for debugging purposes
+        LevelLoader levelLoader = FindFirstObjectByType<LevelLoader>();
+        if (levelLoader == null)
+        {
+            GameObject levelLoaderObject = new GameObject("LevelLoader");
+            levelLoader = levelLoaderObject.AddComponent<LevelLoader>();
+            DontDestroyOnLoad(levelLoaderObject);
+            levelLoader.GetCurrentLevelIndex();
+        }
+#endif
     }
 
     private void Start()
@@ -70,10 +90,46 @@ public class GameUIController : Singleton<GameUIController>
         enemiesCountText.text = string.Format(ENEMIES_COUNT_TEXT_FORMAT, count, maxEnemiesCount);
     }
 
-    public void ShowFinishScreen(bool isWin)
+    public void ShowFinishScreen(string message, bool isWin, bool isLastLevel)
     {
         finishScreen.SetActive(true);
-        finishText.text = isWin ? WIN_MESSAGE : LOSE_MESSAGE;
+        finishText.text = message;
+
+        if (isWin && !isLastLevel)
+        {
+            finishButtonText.text = NEXT_LEVEL_BUTTON_TEXT;
+        }
+        else if (isWin && isLastLevel)
+        {
+            finishButtonText.text = CLOSE_BUTTON_TEXT;
+        }
+        else
+        {
+            finishButtonText.text = RETRY_BUTTON_TEXT;
+        }
+        finishButton.enabled = true;
+        finishButton.onClick.RemoveAllListeners();
+        finishButton.onClick.AddListener(() => OnFinishButton(isWin, isLastLevel));
+    }
+
+    public void OnFinishButton(bool isWin, bool isLastLevel)
+    {
+        if (isWin && !isLastLevel)
+        {
+            LevelLoader.Instance.LoadNextLevel();
+        }
+        else if (isWin && isLastLevel)
+        {
+            Application.Quit();
+
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
+        else
+        {
+            LevelLoader.Instance.ReloadCurrentLevel();
+        }
     }
 
     public void ShowMessage(string message)

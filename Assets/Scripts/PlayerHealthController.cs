@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerHealthController : Singleton<PlayerHealthController>
 {
-    [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
 
@@ -16,9 +15,11 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
         GameUIController.Instance.UpdateHealth(currentHealth);
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
     }
@@ -36,6 +37,8 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     private void Die()
     {
-        Debug.Log("Player has died.");
+        GameUIController.Instance.ShowFinishScreen(GameUIController.LOSE_MESSAGE, isWin: false, isLastLevel: false);
+        Time.timeScale = 0;
+        PlayerMovementController.Instance.enabled = false;
     }
 }
