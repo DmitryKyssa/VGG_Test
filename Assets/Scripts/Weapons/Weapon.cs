@@ -65,6 +65,7 @@ public class Weapon : MonoBehaviour
             return;
         }
 
+        Debug.DrawLine(firePoint.position, firePoint.position + firePoint.up * weaponData.range, Color.yellow, 1f);
         if (Physics.Raycast(firePoint.position, firePoint.up, out RaycastHit hit, weaponData.range))
         {
             if (hit.collider.gameObject.TryGetComponent(out IDamageable damageable))

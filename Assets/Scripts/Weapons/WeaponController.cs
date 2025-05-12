@@ -15,9 +15,6 @@ public class WeaponController : Singleton<WeaponController>
     private Vector3 aimedWeaponPosition;
     private Vector3 screenCenter;
 
-    [SerializeField] private float rotationSmoothSpeed = 10f;
-    private Quaternion targetRotation;
-
     public Weapon Weapon => weapon;
 
     protected override void Awake()
@@ -40,13 +37,10 @@ public class WeaponController : Singleton<WeaponController>
             }
         }
 
-        defaultWeaponPosition = weapon.transform.localPosition;
-        defaultWeaponRotation = weapon.transform.localRotation;
+        defaultWeaponPosition = weapon.transform.position;
+        defaultWeaponRotation = weapon.transform.rotation;
         aimedWeaponPosition = defaultWeaponPosition + new Vector3(0f, 0f, 0.4f);
         screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-
-        Quaternion offsetRotation = Quaternion.Euler(-90f, 0f, 0f);
-        targetRotation = weapon.transform.rotation * offsetRotation;
     }
 
     public void UpdateWeapon(Weapon newWeaponPrefab)
@@ -57,21 +51,12 @@ public class WeaponController : Singleton<WeaponController>
         }
 
         weapon = Instantiate(newWeaponPrefab, transform);
-        defaultWeaponPosition = weapon.transform.localPosition;
-        defaultWeaponRotation = weapon.transform.localRotation;
-
-        Quaternion offsetRotation = Quaternion.Euler(-90f, 0f, 0f);
-        targetRotation = weapon.transform.rotation * offsetRotation;
     }
 
     private void Update()
     {
         HandleAiming();
-        UpdateWeaponRotation();
-    }
 
-    private void UpdateWeaponRotation()
-    {
         Ray ray = playerCamera.ScreenPointToRay(screenCenter);
         Vector3 targetPoint;
 
@@ -86,19 +71,9 @@ public class WeaponController : Singleton<WeaponController>
         }
 
         Vector3 direction = targetPoint - weapon.transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
 
-        if (direction.sqrMagnitude > 0.001f)
-        {
-            Quaternion baseRotation = Quaternion.LookRotation(direction);
-            Quaternion offsetRotation = Quaternion.Euler(-90f, 0f, 0f);
-            targetRotation = baseRotation * offsetRotation;
-
-            weapon.transform.rotation = Quaternion.Slerp(
-                weapon.transform.rotation,
-                targetRotation,
-                Time.deltaTime * rotationSmoothSpeed
-            );
-        }
+        weapon.transform.rotation = lookRotation * defaultWeaponRotation;
     }
 
     private void HandleAiming()
