@@ -27,6 +27,11 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool isWaiting = false;
     private float distanceToPlayer;
 
+    [Header("Materials")]
+    private Material defaultMaterial;
+    [SerializeField] private Material hitMaterial;
+    private Renderer rend;
+
     public static Action<Enemy> EnemyKilled;
 
     public enum EnemyState
@@ -45,6 +50,9 @@ public class Enemy : MonoBehaviour, IDamageable
         lastAttackTime = Time.time;
         currentHealth = health;
         gameObject.SetTag(Tag.Enemy);
+
+        rend = GetComponent<Renderer>();
+        defaultMaterial = rend.material;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
@@ -100,7 +108,6 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(1f);
         navMeshAgent.enabled = true;
-        Debug.Log("NavMeshAgent enabled");
         GoToNextPatrolPoint();
     }
 
@@ -120,7 +127,6 @@ public class Enemy : MonoBehaviour, IDamageable
         isWaiting = true;
 
         navMeshAgent.isStopped = true;
-        Debug.Log($"Enemy waiting at patrol point {patrolPoints[currentPatrolIndex].position} for {patrolWaitTime} seconds");
         yield return new WaitForSeconds(patrolWaitTime);
 
         GoToNextPatrolPoint();
@@ -133,13 +139,11 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
         navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex].position);
-        Debug.Log($"Enemy moving to patrol point {patrolPoints[currentPatrolIndex].position}");
     }
 
     private void ChasePlayer()
     {
         navMeshAgent.SetDestination(PlayerMovementController.Instance.transform.position);
-        Debug.Log($"Enemy chasing player at {PlayerMovementController.Instance.transform.position}");
     }
 
     private void AttackPlayer()
@@ -153,7 +157,6 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             PlayerHealthController.Instance.TakeDamage(attackDamage);
             lastAttackTime = Time.time;
-            Debug.Log($"Enemy attacked player for {attackDamage} damage");
         }
     }
 
@@ -172,20 +175,23 @@ public class Enemy : MonoBehaviour, IDamageable
         }
 
         currentHealth -= damage;
-
+        StartCoroutine(FlashHitMaterial());
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
 
-        Debug.Log($"Enemy took {damage} damage. Has {currentHealth}");
+    private IEnumerator FlashHitMaterial()
+    {
+        rend.material = hitMaterial;
+        yield return new WaitForSeconds(1f);
+        rend.material = defaultMaterial;
     }
 
     private void Die()
     {
         navMeshAgent.isStopped = true;
-
-        Debug.Log("Enemy died.");
         EnemyKilled?.Invoke(this);
     }
 

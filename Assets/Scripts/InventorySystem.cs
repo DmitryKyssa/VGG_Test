@@ -94,13 +94,11 @@ public class InventorySystem : Singleton<InventorySystem>
         inventoryUI = InventoryUIController.Instance.gameObject;
         if (inventoryUI.activeSelf)
         {
-            Time.timeScale = 1;
             inventoryUI.SetActive(false);
             PlayerMovementController.Instance.PlayerInput.actions["Look"].Enable();
         }
         else
         {
-            Time.timeScale = 0;
             inventoryUI.SetActive(true);
             PlayerMovementController.Instance.PlayerInput.actions["Look"].Disable();
         }

@@ -11,10 +11,8 @@ public enum Tag
    MainCamera,
    Player,
    GameController,
-   BulletsPool,
    Enemy,
-   Pickable,
-   Destroyable,
+   EnemyHead,
 }
 
 public static class TagExtensions
@@ -37,14 +35,10 @@ public static class TagExtensions
                return "Player";
            case Tag.GameController:
                return "GameController";
-           case Tag.BulletsPool:
-               return "BulletsPool";
            case Tag.Enemy:
                return "Enemy";
-           case Tag.Pickable:
-               return "Pickable";
-           case Tag.Destroyable:
-               return "Destroyable";
+           case Tag.EnemyHead:
+               return "EnemyHead";
            default:
                return string.Empty;
         }

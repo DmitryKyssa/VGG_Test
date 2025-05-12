@@ -10,7 +10,6 @@ public class Pickable : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetTag(Tag.Pickable);
         pickableCollider = GetComponent<Collider>();
         pickableCollider.isTrigger = true;
 

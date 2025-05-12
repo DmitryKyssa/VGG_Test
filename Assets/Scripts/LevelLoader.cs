@@ -20,7 +20,6 @@ public class LevelLoader : Singleton<LevelLoader>
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             levelNames[i] = Path.GetFileNameWithoutExtension(scenePath);
-            Debug.Log($"Level {i}: {levelNames[i]}");
         }
 
 #if UNITY_EDITOR

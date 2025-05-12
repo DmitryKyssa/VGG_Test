@@ -2,7 +2,7 @@
   "weaponTypes": {
     "Red": true,
     "Blue": true,
-    "Black": false
+    "Black": true
   },
   "patronTypes": {
     "Blue": true,
@@ -15,7 +15,7 @@
     "30": 0
   },
   "magazines": {
-    "1": 1,
+    "1": 0,
     "2": 0,
     "3": 0
   }

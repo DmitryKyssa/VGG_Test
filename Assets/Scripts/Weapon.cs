@@ -69,7 +69,15 @@ public class Weapon : MonoBehaviour
         {
             if (hit.collider.gameObject.TryGetComponent(out IDamageable damageable))
             {
-                damageable.TakeDamage(patronData.damage);
+                Debug.Log($"<color=green>Hit {hit.collider.gameObject.name}</color>");
+                if (hit.collider.gameObject.CompareTag(Tag.EnemyHead))
+                {
+                    damageable.TakeDamage(2 * patronData.damage);
+                }
+                else if (hit.collider.gameObject.CompareTag(Tag.Enemy))
+                {
+                    damageable.TakeDamage(patronData.damage);
+                }
             }
         }
 

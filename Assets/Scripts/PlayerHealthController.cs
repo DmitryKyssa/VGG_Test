@@ -1,9 +1,13 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerHealthController : Singleton<PlayerHealthController>
 {
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
+    private Volume volume;
 
     public int MaxHealth => maxHealth;
 
@@ -12,6 +16,7 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
         base.Awake();
         currentHealth = maxHealth;
         DontDestroyOnLoad(gameObject);
+        volume = FindFirstObjectByType<Volume>();
     }
 
     public void Initialize()
@@ -22,13 +27,27 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        StartCoroutine(FlashHitEffect());
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             Die();
         }
-        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
         GameUIController.Instance.UpdateHealth(currentHealth);
+    }
+
+    private IEnumerator FlashHitEffect()
+    {
+        if (volume == null)
+        {
+            volume = FindFirstObjectByType<Volume>();
+        }
+        volume.profile.TryGet(out Vignette vignette);
+        vignette.intensity.Override(0.5f);
+        vignette.active = true;
+        yield return new WaitForSeconds(0.5f);
+        vignette.intensity.Override(0f);
+        vignette.active = false;
     }
 
     public void Heal(int amount)
@@ -46,7 +65,6 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
             currentHealth = maxHealth;
         }
         GameUIController.Instance.UpdateHealth(currentHealth);
-        Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
     }
 
     private void Die()
