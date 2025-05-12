@@ -10,3 +10,11 @@ public class WeaponData : ScriptableObject
     public int magazines;
     public int patronsPerMagazine;
 }
+
+public static class WeaponDataExtensions
+{
+    public static string Stringify(this WeaponData weaponData)
+    {
+        return $"Weapon Name: {weaponData.weaponName},\n Fire Rate: {weaponData.fireRate},\n Range: {weaponData.range},\n Reload Time: {weaponData.reloadTime},\n Magazines: {weaponData.magazines},\n Patrons Per Magazine: {weaponData.patronsPerMagazine}";
+    }
+}

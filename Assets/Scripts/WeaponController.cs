@@ -66,6 +66,16 @@ public class WeaponController : Singleton<WeaponController>
         weapon.transform.rotation = lookRotation * defaultWeaponRotation;
     }
 
+    public void UpdateWeapon(Weapon newWeaponPrefab)
+    {
+        if (weapon != null)
+        {
+            Destroy(weapon.gameObject);
+        }
+
+        weapon = Instantiate(newWeaponPrefab, transform);
+    }
+
     private void HandleAiming()
     {
         if (aimAction.triggered)

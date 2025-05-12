@@ -33,6 +33,13 @@ public class PlayerHealthController : Singleton<PlayerHealthController>
 
     public void Heal(int amount)
     {
+        if (currentHealth == maxHealth)
+        {
+            InventorySystem.Instance.AddHealer(amount);
+            InventoryUIController.Instance.SetHealersCount(amount, 1);
+            return;
+        }
+
         currentHealth += amount;
         if (currentHealth > maxHealth)
         {

@@ -20,7 +20,11 @@ public class Weapon : MonoBehaviour
 
         GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
         GameUIController.Instance.UpdatePatrons(currentPatrons, weaponData.patronsPerMagazine);
+        SetPatronData();
+    }
 
+    public void SetPatronData()
+    {
         patronData = Resources.Load<PatronData>($"PatronsDatas/{InventorySystem.Instance.PatronType}");
     }
 
@@ -74,9 +78,17 @@ public class Weapon : MonoBehaviour
 
     public void TakeMagazines(int magazines)
     {
-        currentMagazines += magazines;
+        if (currentMagazines >= weaponData.magazines)
+        {
+            currentMagazines = weaponData.magazines;
+            InventorySystem.Instance.AddMagazine(magazines);
+        }
+        else
+        {
+            currentMagazines += magazines;
+        }
+
         GameUIController.Instance.UpdateMagazines(currentMagazines, weaponData.magazines);
-        Debug.Log($"Added {magazines} magazines. Current magazines: {currentMagazines}");
     }
 
     private IEnumerator PlayFireAnimation()

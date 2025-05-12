@@ -43,6 +43,24 @@ public class PickablesController : Singleton<PickablesController>
     private IEnumerator Start()
     {
         pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas").ToList();
+        
+        foreach (PickableData pickableData in pickableDatas)
+        {
+            if (pickableData.pickableType == PickableType.Weapon)
+            {
+                if (InventorySystem.Instance.InventoryData.weaponTypes[pickableData.weaponType] == true)
+                {
+                    pickableDatas.Remove(pickableData);
+                }
+            }
+            else if (pickableData.pickableType == PickableType.Patron)
+            {
+                if (InventorySystem.Instance.InventoryData.patronTypes[pickableData.patronType] == true)
+                {
+                    pickableDatas.Remove(pickableData);
+                }
+            }
+        }
 
         WaitForSeconds wait = new WaitForSeconds(delay);
 
@@ -104,8 +122,6 @@ public class PickablesController : Singleton<PickablesController>
 
     private PickableData GetPickableData()
     {
-        //TODO: Check in Inventory if the pickable is already picked
-
         return pickableDatas[Random.Range(0, pickableDatas.Count)];
     }
 

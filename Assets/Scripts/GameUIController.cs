@@ -85,6 +85,7 @@ public class GameUIController : Singleton<GameUIController>
     private void Start()
     {
         ShowMessage(GAME_START_MESSAGE);
+        InventoryUIController.Instance.Initialize();
     }
 
     public void UpdateHealth(int health)

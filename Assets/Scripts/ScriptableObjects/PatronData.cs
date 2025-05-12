@@ -7,3 +7,11 @@ public class PatronData : ScriptableObject
     public int damage;
     public ParticleSystem gunPointEffect;
 }
+
+public static class PatronDataExtensions
+{
+    public static string Stringify(this PatronData patronData)
+    {
+        return $"Patron Name: {patronData.patronName},\n Damage: {patronData.damage}";
+    }
+}

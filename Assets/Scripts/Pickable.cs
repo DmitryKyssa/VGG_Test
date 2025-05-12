@@ -47,7 +47,8 @@ public class Pickable : MonoBehaviour
         switch (pickableData.pickableType)
         {
             case PickableType.Weapon:
-                //PlayerController.Instance.SetWeapon(pickableData.weaponType);
+                InventorySystem.Instance.AddWeapon(pickableData.weaponType);
+                InventoryUIController.Instance.SetWeaponActive(pickableData.weaponType);
                 break;
             case PickableType.Health:
                 PlayerHealthController.Instance.Heal(pickableData.pickableValue);
@@ -56,7 +57,8 @@ public class Pickable : MonoBehaviour
                 WeaponController.Instance.Weapon.TakeMagazines(pickableData.pickableValue);
                 break;
             case PickableType.Patron:
-                //PatronController.Instance.AddPatron(pickableData.patronType);
+                InventorySystem.Instance.AddPatron(pickableData.patronType);
+                InventoryUIController.Instance.SetPatronActive(pickableData.patronType);
                 break;
             default:
                 Debug.LogError("Unknown pickable type");

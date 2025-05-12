@@ -78,6 +78,7 @@ public class InventorySystem : Singleton<InventorySystem>
     {
         yield return new WaitForSeconds(1f);
         LoadInventory();
+        InventoryUIController.Instance.Initialize();
     }
 
     public void ActivateInput()
@@ -89,7 +90,7 @@ public class InventorySystem : Singleton<InventorySystem>
 
     public void Initialize()
     {
-        inventoryUI = FindFirstObjectByType<InventoryUIController>(FindObjectsInactive.Include).gameObject;
+        inventoryUI = InventoryUIController.Instance.gameObject;
         if (inventoryUI.activeSelf)
         {
             inventoryUI.SetActive(false);
@@ -112,11 +113,55 @@ public class InventorySystem : Singleton<InventorySystem>
         }
     }
 
+    public void AddWeapon(WeaponType weaponType)
+    {
+        if (!inventoryData.weaponTypes[weaponType])
+        {
+            inventoryData.weaponTypes[weaponType] = true;
+        }
+    }
+
+    public void AddPatron(PatronType patronType)
+    {
+        if (!inventoryData.patronTypes[patronType])
+        {
+            inventoryData.patronTypes[patronType] = true;
+        }
+    }
+
+    public void AddHealer(int amount)
+    {
+        inventoryData.healers[amount]++;
+    }
+
+    public void AddMagazine(int amount)
+    {
+        inventoryData.magazines[amount]++;
+    }
+
+    public void RemoveHealer(int amount)
+    {
+        if (inventoryData.healers[amount] > 0)
+        {
+            inventoryData.healers[amount]--;
+            PlayerHealthController.Instance.Heal(amount);
+        }
+    }
+
+    public void RemoveMagazine(int amount)
+    {
+        if (inventoryData.magazines[amount] > 0)
+        {
+            inventoryData.magazines[amount]--;
+            WeaponController.Instance.Weapon.TakeMagazines(amount);
+        }
+    }
+
     public void SaveInventory()
     {
         string path = Path.Combine(Application.streamingAssetsPath, SAVED_INVENTORY_FILE);
 
-        if(!File.Exists(path))
+        if (!File.Exists(path))
         {
             SetDefaultData();
         }
@@ -128,22 +173,24 @@ public class InventorySystem : Singleton<InventorySystem>
     private void SetDefaultData()
     {
         inventoryData.weaponTypes.Add(WeaponType.Red, true); //default weapon
-        inventoryData.weaponTypes.Add(WeaponType.Black, false);
         inventoryData.weaponTypes.Add(WeaponType.Blue, false);
+        inventoryData.weaponTypes.Add(WeaponType.Black, false);
 
         inventoryData.patronTypes.Add(PatronType.Blue, true); //default patron
-        inventoryData.patronTypes.Add(PatronType.Pink, false);
         inventoryData.patronTypes.Add(PatronType.Green, false);
+        inventoryData.patronTypes.Add(PatronType.Pink, false);
 
-        var pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas"); 
+        var pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas");
 
-        int[] healers = pickableDatas.Select(p => int.Parse(p.name.Replace("Health", ""))).ToArray();
+        int[] healers = pickableDatas.Where(p => p.pickableType == PickableType.Health)
+            .Select(p => p.pickableValue).ToArray();
         foreach (int healer in healers)
         {
             inventoryData.healers.Add(healer, 0);
         }
 
-        int[] magazines = pickableDatas.Select(p => int.Parse(p.name.Replace("Magazines", ""))).ToArray();
+        int[] magazines = pickableDatas.Where(p => p.pickableType == PickableType.Magazines)
+            .Select(p => p.pickableValue).ToArray();
         foreach (int magazine in magazines)
         {
             inventoryData.magazines.Add(magazine, 0);
@@ -171,7 +218,10 @@ public class InventorySystem : Singleton<InventorySystem>
 
     private void OnDisable()
     {
-        toggleInventoryUI.performed -= ctx => ToggleInventoryUI();
-        toggleInventoryUI.Disable();
+        if (toggleInventoryUI != null)
+        {
+            toggleInventoryUI.performed -= ctx => ToggleInventoryUI();
+            toggleInventoryUI.Disable();
+        }
     }
 }

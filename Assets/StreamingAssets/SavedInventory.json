@@ -1,10 +1,22 @@
 {
   "weaponTypes": {
-    "Red": true
+    "Red": true,
+    "Blue": false,
+    "Black": false
   },
   "patronTypes": {
-    "Blue": true
+    "Blue": true,
+    "Green": false,
+    "Pink": false
   },
-  "healers": {},
-  "magazines": {}
+  "healers": {
+    "10": 0,
+    "20": 0,
+    "30": 0
+  },
+  "magazines": {
+    "1": 0,
+    "2": 0,
+    "3": 0
+  }
 }

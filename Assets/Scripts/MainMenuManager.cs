@@ -5,13 +5,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
 {
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
-    [SerializeField] private Button continueButton;
+    [SerializeField] private Button inventoryButton;
+    [SerializeField] private GameObject inventoryUI;
 
     private void Start()
     {
         startButton.onClick.AddListener(OnStartButtonClicked);
         exitButton.onClick.AddListener(OnExitButtonClicked);
-        continueButton.onClick.AddListener(OnContinueButtonClicked);
+        inventoryButton.onClick.AddListener(OnInventoryButtonClicked);
     }
 
     private void OnStartButtonClicked()
@@ -29,8 +30,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 #endif
     }
 
-    private void OnContinueButtonClicked()
+    private void OnInventoryButtonClicked()
     {
-        //save logic
+        inventoryUI.SetActive(!inventoryUI.activeSelf);
     }
 }
