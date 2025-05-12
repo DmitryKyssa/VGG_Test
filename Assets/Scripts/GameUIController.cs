@@ -68,7 +68,6 @@ public class GameUIController : Singleton<GameUIController>
             GameObject inventorySystemObject = new GameObject("InventorySystem");
             inventorySystem = inventorySystemObject.AddComponent<InventorySystem>();
             DontDestroyOnLoad(inventorySystemObject);
-            inventorySystem.ActivateInput();
         }
 #endif
     }

@@ -21,6 +21,7 @@ public class PlayerMovementController : Singleton<PlayerMovementController>
     private InputAction lookAction;
     private InputAction jumpAction;
     private InputAction runAction;
+    private InputAction inventoryAction;
 
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
@@ -45,7 +46,7 @@ public class PlayerMovementController : Singleton<PlayerMovementController>
         lookAction = playerInput.actions["Look"];
         jumpAction = playerInput.actions["Jump"];
         runAction = playerInput.actions["Run"];
-        InventorySystem.Instance.ActivateInput();
+        inventoryAction = playerInput.actions["Inventory"];
 
         gameObject.SetTag(Tag.Player);
     }
@@ -62,6 +63,8 @@ public class PlayerMovementController : Singleton<PlayerMovementController>
 
         runAction.performed += OnRunInput;
         runAction.canceled += OnRunInput;
+
+        inventoryAction.performed += ctx => InventorySystem.Instance.ToggleInventoryUI();
     }
 
     private void OnDisable()
@@ -76,6 +79,8 @@ public class PlayerMovementController : Singleton<PlayerMovementController>
 
         runAction.performed -= OnRunInput;
         runAction.canceled -= OnRunInput;
+
+        inventoryAction.performed -= ctx => InventorySystem.Instance.ToggleInventoryUI();
     }
 
     private void Update()

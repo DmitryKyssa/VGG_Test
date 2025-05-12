@@ -38,9 +38,19 @@ public class WeaponController : Singleton<WeaponController>
         }
 
         defaultWeaponPosition = weapon.transform.position;
-        defaultWeaponRotation = weapon.transform.rotation;
+        defaultWeaponRotation = Quaternion.Inverse(Quaternion.LookRotation(transform.forward)) * weapon.transform.rotation;
         aimedWeaponPosition = defaultWeaponPosition + new Vector3(0f, 0f, 0.4f);
         screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+    }
+
+    public void UpdateWeapon(Weapon newWeaponPrefab)
+    {
+        if (weapon != null)
+        {
+            Destroy(weapon.gameObject);
+        }
+
+        weapon = Instantiate(newWeaponPrefab, transform);
     }
 
     private void Update()
@@ -64,16 +74,6 @@ public class WeaponController : Singleton<WeaponController>
         Quaternion lookRotation = Quaternion.LookRotation(direction);
 
         weapon.transform.rotation = lookRotation * defaultWeaponRotation;
-    }
-
-    public void UpdateWeapon(Weapon newWeaponPrefab)
-    {
-        if (weapon != null)
-        {
-            Destroy(weapon.gameObject);
-        }
-
-        weapon = Instantiate(newWeaponPrefab, transform);
     }
 
     private void HandleAiming()

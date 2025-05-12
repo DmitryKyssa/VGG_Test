@@ -43,24 +43,11 @@ public class PickablesController : Singleton<PickablesController>
     private IEnumerator Start()
     {
         pickableDatas = Resources.LoadAll<PickableData>("PickablesDatas").ToList();
-        
-        foreach (PickableData pickableData in pickableDatas)
-        {
-            if (pickableData.pickableType == PickableType.Weapon)
-            {
-                if (InventorySystem.Instance.InventoryData.weaponTypes[pickableData.weaponType] == true)
-                {
-                    pickableDatas.Remove(pickableData);
-                }
-            }
-            else if (pickableData.pickableType == PickableType.Patron)
-            {
-                if (InventorySystem.Instance.InventoryData.patronTypes[pickableData.patronType] == true)
-                {
-                    pickableDatas.Remove(pickableData);
-                }
-            }
-        }
+
+        pickableDatas.RemoveAll(p => (p.pickableType == PickableType.Weapon && 
+            InventorySystem.Instance.InventoryData.weaponTypes[p.weaponType]) ||
+            (p.pickableType == PickableType.Patron &&
+            InventorySystem.Instance.InventoryData.patronTypes[p.patronType]));
 
         WaitForSeconds wait = new WaitForSeconds(delay);
 

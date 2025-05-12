@@ -21,7 +21,6 @@ public class InventorySystem : Singleton<InventorySystem>
 
     private const string SAVED_INVENTORY_FILE = "SavedInventory.json";
 
-    private InputAction toggleInventoryUI;
     private GameObject inventoryUI;
 
     private InventoryData inventoryData = new InventoryData();
@@ -76,16 +75,9 @@ public class InventorySystem : Singleton<InventorySystem>
 
     private IEnumerator AsyncLoadInventory()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         LoadInventory();
         InventoryUIController.Instance.Initialize();
-    }
-
-    public void ActivateInput()
-    {
-        toggleInventoryUI = PlayerMovementController.Instance.PlayerInput.actions["Inventory"];
-        toggleInventoryUI.performed += ctx => ToggleInventoryUI();
-        toggleInventoryUI.Enable();
     }
 
     public void Initialize()
@@ -97,8 +89,9 @@ public class InventorySystem : Singleton<InventorySystem>
         }
     }
 
-    private void ToggleInventoryUI()
+    public void ToggleInventoryUI()
     {
+        inventoryUI = InventoryUIController.Instance.gameObject;
         if (inventoryUI.activeSelf)
         {
             Time.timeScale = 1;
@@ -213,15 +206,6 @@ public class InventorySystem : Singleton<InventorySystem>
             SetDefaultData();
             string json = JsonConvert.SerializeObject(inventoryData, Formatting.Indented);
             File.WriteAllText(path, json);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (toggleInventoryUI != null)
-        {
-            toggleInventoryUI.performed -= ctx => ToggleInventoryUI();
-            toggleInventoryUI.Disable();
         }
     }
 }
