@@ -1,5 +1,5 @@
 # VGG_Test
-**Build is in Packages**
+**Build is in Releases**
 
 Editor window exemple:
 
