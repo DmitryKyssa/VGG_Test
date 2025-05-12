@@ -115,4 +115,9 @@ public class Weapon : MonoBehaviour
         fireAction.performed -= ctx => Fire();
         fireAction.Disable();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

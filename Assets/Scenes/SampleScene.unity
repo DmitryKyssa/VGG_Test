@@ -5231,7 +5231,7 @@ MonoBehaviour:
   - {fileID: 832445736}
   pickablePrefab: {fileID: 801083797547579821, guid: fa0cc81bc04ef744baab6380a37e4743,
     type: 3}
-  delay: 15
+  delay: 6
 --- !u!1 &1148031681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5765,7 +5765,7 @@ MonoBehaviour:
   - {fileID: 1273942474}
   - {fileID: 1806905853}
   - {fileID: 1148031682}
-  spawnDelay: 30
+  spawnDelay: 15
   patrolPoints:
   - {fileID: 289114802}
   - {fileID: 471620312}
