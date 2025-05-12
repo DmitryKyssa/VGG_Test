@@ -94,6 +94,9 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator PlayFireAnimation()
     {
+        if (gameObject == null)
+            yield break;
+
         Vector3 originalPosition = transform.localPosition;
         Vector3 recoilPosition = originalPosition;
         recoilPosition.z -= 0.1f;

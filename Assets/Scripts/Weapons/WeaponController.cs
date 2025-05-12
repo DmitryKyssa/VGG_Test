@@ -37,8 +37,8 @@ public class WeaponController : Singleton<WeaponController>
             }
         }
 
-        defaultWeaponPosition = weapon.transform.position;
-        defaultWeaponRotation = weapon.transform.rotation;
+        defaultWeaponPosition = new Vector3(0.2f, 0.7f, 0.4f);
+        defaultWeaponRotation = Quaternion.Euler(90f, 0f, 0f);
         aimedWeaponPosition = defaultWeaponPosition + new Vector3(0f, 0f, 0.4f);
         screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
     }
@@ -72,8 +72,8 @@ public class WeaponController : Singleton<WeaponController>
 
         Vector3 direction = targetPoint - weapon.transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-
-        weapon.transform.rotation = lookRotation * defaultWeaponRotation;
+        var product = lookRotation * defaultWeaponRotation;
+        weapon.transform.rotation = Quaternion.Slerp(weapon.transform.rotation, product, Time.deltaTime * aimSpeed);
     }
 
     private void HandleAiming()
