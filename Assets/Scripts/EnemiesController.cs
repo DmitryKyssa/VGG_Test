@@ -74,6 +74,7 @@ public class EnemiesController : Singleton<EnemiesController>
         spawnPosition.y = 1;
         Enemy enemy = enemyPool.Get();
         enemy.transform.position = spawnPosition;
+        enemy.Initialize();
         enemy.gameObject.SetActive(true);
     }
 

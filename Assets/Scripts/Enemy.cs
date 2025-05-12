@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Materials")]
     private Material defaultMaterial;
     [SerializeField] private Material hitMaterial;
-    private Renderer rend;
+    [SerializeField] private Renderer rend;
 
     public static Action<Enemy> EnemyKilled;
 
@@ -51,7 +51,6 @@ public class Enemy : MonoBehaviour, IDamageable
         currentHealth = health;
         gameObject.SetTag(Tag.Enemy);
 
-        rend = GetComponent<Renderer>();
         defaultMaterial = rend.material;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -59,6 +58,12 @@ public class Enemy : MonoBehaviour, IDamageable
         currentState = EnemyState.Patrol;
         navMeshAgent.enabled = false;
         StartCoroutine(EnableNavMeshAgent());
+    }
+
+    public void Initialize()
+    {
+        currentHealth = health;
+        rend.material = defaultMaterial;
     }
 
     private void Update()
@@ -184,7 +189,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private IEnumerator FlashHitMaterial()
     {
-        rend.material = hitMaterial;
+        rend.material= hitMaterial;
         yield return new WaitForSeconds(1f);
         rend.material = defaultMaterial;
     }
