@@ -5,7 +5,6 @@ public class PatronData : ScriptableObject
 {
     public string patronName;
     public int damage;
-    public ParticleSystem gunPointEffect;
 }
 
 public static class PatronDataExtensions

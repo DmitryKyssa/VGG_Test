@@ -138,6 +138,7 @@ public class GameUIController : Singleton<GameUIController>
     {
         if (isWin && !isLastLevel)
         {
+            InventorySystem.Instance.SaveInventory();
             LevelLoader.Instance.LoadNextLevel();
             HideFinishScreen();
         }

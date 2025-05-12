@@ -6,7 +6,7 @@
   },
   "patronTypes": {
     "Blue": true,
-    "Green": false,
+    "Green": true,
     "Pink": true
   },
   "healers": {

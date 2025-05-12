@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patronName: Pink
   damage: 25
-  gunPointEffect: {fileID: 0}
+  gunPointEffect: {fileID: 3593424570016288471, guid: 86816ef0669196444b4a3fc87540a179,
+    type: 3}
