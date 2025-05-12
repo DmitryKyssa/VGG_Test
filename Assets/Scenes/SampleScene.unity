@@ -4202,6 +4202,7 @@ MonoBehaviour:
   aimFOV: 30
   normalFOV: 60
   playerCamera: {fileID: 856441978}
+  rotationSmoothSpeed: 10
 --- !u!1 &916649161
 GameObject:
   m_ObjectHideFlags: 0
@@ -4862,7 +4863,7 @@ Transform:
   m_GameObject: {fileID: 1104669854}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4908,10 +4909,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a2c28a0c-7be4-4c2f-9f5a-aceb84a56d3e
     m_ActionName: 'Player/Jump[/Keyboard/space]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fa35b9ae-6bab-4a9a-93c3-6ebf8e0e2a3d
-    m_ActionName: 'Player/Crouch[/Keyboard/leftCtrl]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: fa44175b-aba6-4277-96e7-42369ead3c9d
